@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 龙虾豪华赌场 🦞</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: radial-gradient(circle at center, #1a472a 0%, #0d2818 100%);
+            height: 100vh;
+            overflow: hidden;
+            padding: 10px;
+            color: #fff;
+        }
+        
+        .container {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 15px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .game-area {
+            background: linear-gradient(135deg, #0f5132 0%, #1a6d47 100%);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 3px solid #ffd700;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            background: linear-gradient(135deg, #1a472a 0%, #0f5132 100%);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #ffd700;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        .login-screen {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .login-screen h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .login-screen input {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            margin: 15px 0;
+            width: 280px;
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .login-screen button {
+            padding: 12px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0f5132;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            background: linear-gradient(135deg, #0f5132 0%, #1a6d47 100%);
+            color: #ffd700;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-details h2 {
+            font-size: 1.1em;
+            margin-bottom: 3px;
+        }
+        
+        .balance {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .round-info {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        .streak-info {
+            font-size: 0.85em;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .dice-area {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .dice {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            border: 3px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #c41e3a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes roll {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+        }
+        
+        .result {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            border: 2px solid;
+            margin-bottom: 10px;
+        }
+        
+        .result.win {
+            background: rgba(40, 167, 69, 0.3);
+            color: #90ee90;
+            border-color: #28a745;
+        }
+        
+        .result.lose {
+            background: rgba(220, 53, 69, 0.3);
+            color: #ff6b6b;
+            border-color: #dc3545;
+        }
+        
+        .betting-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .betting-section {
+            margin-bottom: 12px;
+        }
+        
+        .betting-section h3 {
+            color: #ffd700;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .betting-grid {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .grid-large {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .grid-medium {
+            grid-template-columns: repeat(6, 1fr);
+        }
+        
+        .grid-small {
+            grid-template-columns: repeat(8, 1fr);
+        }
+        
+        .bet-option {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #ffd700;
+            border-radius: 6px;
+            padding: 8px 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 0.85em;
+        }
+        
+        .bet-option-large {
+            padding: 12px 8px;
+            font-size: 1em;
+        }
+        
+        .bet-option:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .bet-option.selected {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0f5132;
+            font-weight: bold;
+        }
+        
+        .bet-option .name {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+        
+        .bet-option .cost {
+            font-size: 0.9em;
+            color: #ffd700;
+        }
+        
+        .bet-option.selected .cost {
+            color: #c41e3a;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        
+        .btn {
+            padding: 10px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-roll {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            color: #ffd700;
+            border: 2px solid #ffd700;
+        }
+        
+        .btn-roll:disabled {
+            background: #555;
+            cursor: not-allowed;
+            border-color: #888;
+        }
+        
+        .btn-clear {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .leaderboard h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .leaderboard-list {
+            list-style: none;
+        }
+        
+        .leaderboard-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            font-size: 0.9em;
+        }
+        
+        .leaderboard-item.rank-1 {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 237, 78, 0.3) 100%);
+        }
+        
+        .leaderboard-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+        }
+        
+        .rank {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffd700;
+            min-width: 25px;
+        }
+        
+        .player-name {
+            flex: 1;
+            font-weight: bold;
+        }
+        
+        .player-balance {
+            font-size: 1em;
+            color: #90ee90;
+            font-weight: bold;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a6d47 0%, #0f5132 100%);
+            border: 3px solid #ffd700;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .treasure-box {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .treasure-box h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .treasure-box button {
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            color: #ffd700;
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .wheel-container {
+            position: relative;
+            margin: 20px auto;
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #c41e3a;
+            z-index: 20;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.8));
+        }
+        
+        .wheel {
+            width: 350px;
+            height: 350px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 50%;
+            border: 8px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            overflow: hidden;
+            background: conic-gradient(
+                from 0deg,
+                #8b0000 0deg 60deg,
+                #006400 60deg 120deg,
+                #1e90ff 120deg 180deg,
+                #ff8c00 180deg 240deg,
+                #9370db 240deg 300deg,
+                #ffd700 300deg 360deg
+            );
+        }
+        
+        .wheel-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .wheel-label {
+            position: absolute;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .wheel-center {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #ffd700;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+        
+        .wheel-result-modal {
+            margin-top: 20px;
+        }
+        
+        .wheel-result-modal h3 {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .wheel-result-modal .prize {
+            font-size: 2em;
+            color: #90ee90;
+            margin: 15px 0;
+        }
+        
+        .game-over {
+            text-align: center;
+            color: #ffd700;
+        }
+        
+        .game-over h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .game-over img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            margin: 15px 0;
+        }
+        
+        .game-over .comment {
+            font-size: 1.5em;
+            color: #ff6b6b;
+            margin: 20px 0;
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-area">
+            <h1>🎲 龙虾豪华赌场 🦞</h1>
+            
+            <div id="loginScreen" class="login-screen">
+                <h2>欢迎来到龙虾豪华赌场！</h2>
+                <p style="font-size: 1em; margin-bottom: 15px;">输入ID，获得50元筹码</p>
+                <input type="text" id="playerIdInput" placeholder="输入你的ID" maxlength="20">
+                <br>
+                <button onclick="startGame()">🎰 进入赌场</button>
+            </div>
+            
+            <div id="gameScreen" style="display: none; height: 100%; display: flex; flex-direction: column;">
+                <div class="user-info">
+                    <img id="playerAvatar" class="avatar" src="" alt="头像">
+                    <div class="user-details">
+                        <h2>🎰 <span id="playerId"></span></h2>
+                        <div class="balance">💰 <span id="balance">50</span> 元</div>
+                        <div class="round-info">第 <span id="currentRound">1</span>/5轮 | <span id="gamesPlayed">0</span>场</div>
+                        <div class="streak-info" id="streakInfo" style="display: none;">🔥 连胜 <span id="streak">0</span></div>
+                    </div>
+                </div>
+                
+                <div class="game-content">
+                    <div class="dice-area">
+                        <div class="dice">?</div>
+                        <div class="dice">?</div>
+                        <div class="dice">?</div>
+                    </div>
+                    
+                    <div id="result" class="result" style="display: none;"></div>
+                    
+                    <div class="betting-container">
+                        <div class="betting-section">
+                            <h3>📌 大小单双</h3>
+                            <div class="betting-grid grid-large">
+                                <div class="bet-option bet-option-large" data-type="big" data-cost="10" onclick="toggleBet(this)">
+                                    <div class="name">大(11-17)</div>
+                                    <div class="cost">¥10</div>
+                                </div>
+                                <div class="bet-option bet-option-large" data-type="small" data-cost="10" onclick="toggleBet(this)">
+                                    <div class="name">小(4-10)</div>
+                                    <div class="cost">¥10</div>
+                                </div>
+                                <div class="bet-option bet-option-large" data-type="odd" data-cost="10" onclick="toggleBet(this)">
+                                    <div class="name">单</div>
+                                    <div class="cost">¥10</div>
+                                </div>
+                                <div class="bet-option bet-option-large" data-type="even" data-cost="10" onclick="toggleBet(this)">
+                                    <div class="name">双</div>
+                                    <div class="cost">¥10</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="betting-section">
+                            <h3>🎯 点数总和 (4-17)</h3>
+                            <div class="betting-grid grid-small">
+                                <div class="bet-option" data-type="total-4" data-cost="5" onclick="toggleBet(this)"><div class="name">4</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-5" data-cost="5" onclick="toggleBet(this)"><div class="name">5</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-6" data-cost="5" onclick="toggleBet(this)"><div class="name">6</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-7" data-cost="5" onclick="toggleBet(this)"><div class="name">7</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-8" data-cost="5" onclick="toggleBet(this)"><div class="name">8</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-9" data-cost="5" onclick="toggleBet(this)"><div class="name">9</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-10" data-cost="5" onclick="toggleBet(this)"><div class="name">10</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-11" data-cost="5" onclick="toggleBet(this)"><div class="name">11</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-12" data-cost="5" onclick="toggleBet(this)"><div class="name">12</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-13" data-cost="5" onclick="toggleBet(this)"><div class="name">13</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-14" data-cost="5" onclick="toggleBet(this)"><div class="name">14</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-15" data-cost="5" onclick="toggleBet(this)"><div class="name">15</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-16" data-cost="5" onclick="toggleBet(this)"><div class="name">16</div><div class="cost">¥5</div></div>
+                                <div class="bet-option" data-type="total-17" data-cost="5" onclick="toggleBet(this)"><div class="name">17</div><div class="cost">¥5</div></div>
+                            </div>
+                        </div>
+                        
+                        <div class="betting-section">
+                            <h3>🎲 单骰 (出现即中)</h3>
+                            <div class="betting-grid grid-medium">
+                                <div class="bet-option" data-type="single-1" data-cost="3" onclick="toggleBet(this)"><div class="name">1</div><div class="cost">¥3</div></div>
+                                <div class="bet-option" data-type="single-2" data-cost="3" onclick="toggleBet(this)"><div class="name">2</div><div class="cost">¥3</div></div>
+                                <div class="bet-option" data-type="single-3" data-cost="3" onclick="toggleBet(this)"><div class="name">3</div><div class="cost">¥3</div></div>
+                                <div class="bet-option" data-type="single-4" data-cost="3" onclick="toggleBet(this)"><div class="name">4</div><div class="cost">¥3</div></div>
+                                <div class="bet-option" data-type="single-5" data-cost="3" onclick="toggleBet(this)"><div class="name">5</div><div class="cost">¥3</div></div>
+                                <div class="bet-option" data-type="single-6" data-cost="3" onclick="toggleBet(this)"><div class="name">6</div><div class="cost">¥3</div></div>
+                            </div>
+                        </div>
+                        
+                        <div class="betting-section">
+                            <h3>🎲🎲 对子 (两个相同)</h3>
+                            <div class="betting-grid grid-medium">
+                                <div class="bet-option" data-type="pair-1" data-cost="4" onclick="toggleBet(this)"><div class="name">11</div><div class="cost">¥4</div></div>
+                                <div class="bet-option" data-type="pair-2" data-cost="4" onclick="toggleBet(this)"><div class="name">22</div><div class="cost">¥4</div></div>
+                                <div class="bet-option" data-type="pair-3" data-cost="4" onclick="toggleBet(this)"><div class="name">33</div><div class="cost">¥4</div></div>
+                                <div class="bet-option" data-type="pair-4" data-cost="4" onclick="toggleBet(this)"><div class="name">44</div><div class="cost">¥4</div></div>
+                                <div class="bet-option" data-type="pair-5" data-cost="4" onclick="toggleBet(this)"><div class="name">55</div><div class="cost">¥4</div></div>
+                                <div class="bet-option" data-type="pair-6" data-cost="4" onclick="toggleBet(this)"><div class="name">66</div><div class="cost">¥4</div></div>
+                            </div>
+                        </div>
+                        
+                        <div class="betting-section">
+                            <h3>🎲🎲🎲 围骰 (三个相同)</h3>
+                            <div class="betting-grid grid-medium">
+                                <div class="bet-option" data-type="triple-1" data-cost="2" onclick="toggleBet(this)"><div class="name">111</div><div class="cost">¥2</div></div>
+                                <div class="bet-option" data-type="triple-2" data-cost="2" onclick="toggleBet(this)"><div class="name">222</div><div class="cost">¥2</div></div>
+                                <div class="bet-option" data-type="triple-3" data-cost="2" onclick="toggleBet(this)"><div class="name">333</div><div class="cost">¥2</div></div>
+                                <div class="bet-option" data-type="triple-4" data-cost="2" onclick="toggleBet(this)"><div class="name">444</div><div class="cost">¥2</div></div>
+                                <div class="bet-option" data-type="triple-5" data-cost="2" onclick="toggleBet(this)"><div class="name">555</div><div class="cost">¥2</div></div>
+                                <div class="bet-option" data-type="triple-6" data-cost="2" onclick="toggleBet(this)"><div class="name">666</div><div class="cost">¥2</div></div>
+                                <div class="bet-option" data-type="triple-any" data-cost="5" onclick="toggleBet(this)"><div class="name">全围</div><div class="cost">¥5</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="btn btn-clear" onclick="clearBets()">清除</button>
+                        <button class="btn btn-roll" id="rollBtn" onclick="rollDice()">🎲 投掷</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="leaderboard">
+                    <h2>🏆 排行榜</h2>
+                    <ul class="leaderboard-list" id="leaderboard">
+                        <li style="text-align: center; color: #adb5bd; padding: 15px; font-size: 0.9em;">暂无排名</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 宝箱弹窗 -->
+    <div id="treasureModal" class="modal" style="display: none;">
+        <div class="modal-content treasure-box">
+            <h2>🎁 暴击宝箱！</h2>
+            <p style="color: #90ee90; font-size: 1.2em;" id="treasureMessage">恭喜！连续3场中奖！</p>
+            <button onclick="openTreasureBox()">💎 开启宝箱</button>
+        </div>
+    </div>
+    
+    <!-- 转盘弹窗 -->
+    <div id="wheelModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 style="color: #ffd700; margin-bottom: 15px;">🎰 幸运转盘</h2>
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="wheel">
+                    <div class="wheel-labels">
+                        <div class="wheel-label" style="transform: rotate(30deg) translateY(-130px);">-25</div>
+                        <div class="wheel-label" style="transform: rotate(90deg) translateY(-130px);">+25</div>
+                        <div class="wheel-label" style="transform: rotate(150deg) translateY(-130px);">+15</div>
+                        <div class="wheel-label" style="transform: rotate(210deg) translateY(-130px);">+35</div>
+                        <div class="wheel-label" style="transform: rotate(270deg) translateY(-130px);">+40</div>
+                        <div class="wheel-label" style="transform: rotate(330deg) translateY(-130px);">+100</div>
+                    </div>
+                    <div class="wheel-center"></div>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-roll" onclick="spinWheel()" id="spinBtn">🎲 转动</button>
+            </div>
+            <div id="wheelResultDiv" class="wheel-result-modal" style="display: none;">
+                <h3>🎊 恭喜获得</h3>
+                <div class="prize" id="prizeAmount"></div>
+                <button class="btn btn-roll" onclick="confirmWheelResult()">✅ 确认</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 游戏结束弹窗 -->
+    <div id="gameOverModal" class="modal" style="display: none;">
+        <div class="modal-content game-over">
+            <h2>🎮 游戏结束</h2>
+            <img id="finalAvatar" src="" alt="头像">
+            <p style="font-size: 1.2em; margin: 10px 0;">玩家：<span id="finalPlayerId"></span></p>
+            <p style="font-size: 2em; color: #90ee90; margin: 15px 0;">💰 <span id="finalBalance"></span> 元</p>
+            <p id="finalProfit" style="font-size: 1.1em; margin: 10px 0;"></p>
+            <div class="comment" id="gameComment"></div>
+            <button class="btn btn-roll" onclick="location.reload()" style="margin-top: 20px;">🔄 再来一局</button>
+        </div>
+    </div>
+
+    <script>
+        function generateAvatar(seed) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const random = (index) => {
+                const x = Math.sin(hash + index) * 10000;
+                return x - Math.floor(x);
+            };
+            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+            gradient.addColorStop(0, `hsl(${random(1) * 360}, 70%, 60%)`);
+            gradient.addColorStop(1, `hsl(${random(2) * 360}, 70%, 40%)`);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 200, 200);
+            ctx.fillStyle = `hsl(${random(3) * 60 + 20}, 60%, 70%)`;
+            ctx.beginPath();
+            ctx.arc(100, 100, 60, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(80, 90, 8, 0, Math.PI * 2);
+            ctx.arc(120, 90, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            if (random(4) > 0.5) {
+                ctx.arc(100, 100, 30, 0.2 * Math.PI, 0.8 * Math.PI);
+            } else {
+                ctx.arc(100, 120, 30, 1.2 * Math.PI, 1.8 * Math.PI);
+            }
+            ctx.stroke();
+            return canvas.toDataURL();
+        }
+        
+        let gameState = {
+            playerId: '',
+            avatar: '',
+            balance: 50,
+            currentRound: 1,
+            maxRounds: 5,
+            gamesPlayed: 0,
+            selectedBets: [],
+            isRolling: false,
+            winStreak: 0,
+            consecutiveWins: 0,
+            hasTreasureBox: false,
+            wheelPrize: 0,
+            treasureBoxCount: 0
+        };
+        
+        let leaderboard = JSON.parse(localStorage.getItem('diceLeaderboardV4')) || [];
+        
+        const totalOdds = {
+            4: 60, 5: 30, 6: 18, 7: 12, 8: 8, 9: 7, 10: 6,
+            11: 6, 12: 7, 13: 8, 14: 12, 15: 18, 16: 30, 17: 60
+        };
+        
+        // 根据最终分数给出评价（分位数）
+        function getScoreComment(balance) {
+            const profit = balance - 50;
+            
+            // 分位数评价系统
+            if (profit <= -30) return "窝要烟牌！！"; // 后25%
+            if (profit <= -10) return "给窝擦屁鞋"; // 后50%
+            if (profit <= 5) return "牌没有温题"; // 40-50%
+            if (profit <= 20) return "还有谁！"; // 30-40%
+            if (profit <= 35) return "小试牛刀"; // 25-30%
+            if (profit <= 50) return "渐入佳境"; // 20-25%
+            if (profit <= 70) return "如鱼得水"; // 15-20%
+            if (profit <= 90) return "势不可挡"; // 10-15%
+            if (profit <= 120) return "天命之子"; // 5-10%
+            if (profit <= 150) return "赌神降临"; // top 5%
+            return "听说你想问我凭何指导？"; // 极限高分
+        }
+        
+        function startGame() {
+            const input = document.getElementById('playerIdInput');
+            const playerId = input.value.trim();
+            if (!playerId) {
+                alert('请输入你的ID！');
+                return;
+            }
+            gameState.playerId = playerId;
+            gameState.avatar = generateAvatar(playerId);
+            gameState.balance = 50;
+            gameState.currentRound = 1;
+            gameState.gamesPlayed = 0;
+            gameState.selectedBets = [];
+            gameState.winStreak = 0;
+            gameState.consecutiveWins = 0;
+            gameState.hasTreasureBox = false;
+            gameState.treasureBoxCount = 0;
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'flex';
+            document.getElementById('playerId').textContent = playerId;
+            document.getElementById('playerAvatar').src = gameState.avatar;
+            updateDisplay();
+        }
+        
+        function toggleBet(element) {
+            if (gameState.isRolling) return;
+            const type = element.dataset.type;
+            const cost = parseInt(element.dataset.cost);
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                gameState.selectedBets = gameState.selectedBets.filter(b => b.type !== type);
+            } else {
+                const totalCost = gameState.selectedBets.reduce((sum, b) => sum + b.cost, 0) + cost;
+                if (totalCost > gameState.balance) {
+                    alert('余额不足！');
+                    return;
+                }
+                element.classList.add('selected');
+                gameState.selectedBets.push({ type, cost, element });
+            }
+        }
+        
+        function clearBets() {
+            if (gameState.isRolling) return;
+            document.querySelectorAll('.bet-option.selected').forEach(el => el.classList.remove('selected'));
+            gameState.selectedBets = [];
+        }
+        
+        function rollDice() {
+            if (gameState.isRolling || gameState.selectedBets.length === 0) {
+                alert('请至少选择一个投注项目！');
+                return;
+            }
+            const totalCost = gameState.selectedBets.reduce((sum, b) => sum + b.cost, 0);
+            if (totalCost > gameState.balance) {
+                alert('余额不足！');
+                return;
+            }
+            gameState.isRolling = true;
+            document.getElementById('rollBtn').disabled = true;
+            document.getElementById('result').style.display = 'none';
+            gameState.balance -= totalCost;
+            updateDisplay();
+            const diceElements = document.querySelectorAll('.dice');
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                diceElements.forEach(dice => dice.textContent = Math.floor(Math.random() * 6) + 1);
+                rollCount++;
+                if (rollCount >= 10) {
+                    clearInterval(rollInterval);
+                    finishRoll();
+                }
+            }, 100);
+        }
+        
+        function finishRoll() {
+            const dice1 = Math.floor(Math.random() * 6) + 1;
+            const dice2 = Math.floor(Math.random() * 6) + 1;
+            const dice3 = Math.floor(Math.random() * 6) + 1;
+            const total = dice1 + dice2 + dice3;
+            const diceElements = document.querySelectorAll('.dice');
+            diceElements[0].textContent = dice1;
+            diceElements[1].textContent = dice2;
+            diceElements[2].textContent = dice3;
+            let winAmount = 0;
+            const results = [];
+            gameState.selectedBets.forEach(bet => {
+                const win = checkWin(bet.type, dice1, dice2, dice3, total);
+                if (win.isWin) {
+                    const payout = bet.cost * win.multiplier;
+                    winAmount += payout;
+                    results.push(`${bet.element.querySelector('.name').textContent}: +${payout}元`);
+                }
+            });
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            if (winAmount > 0) {
+                gameState.balance += winAmount;
+                gameState.winStreak++;
+                gameState.consecutiveWins++;
+                resultDiv.className = 'result win';
+                resultDiv.innerHTML = `🎉 中奖！${dice1}+${dice2}+${dice3}=${total}<br>${results.join(' | ')}`;
+            } else {
+                gameState.winStreak = 0;
+                gameState.consecutiveWins = 0;
+                resultDiv.className = 'result lose';
+                resultDiv.innerHTML = `😢 未中 ${dice1}+${dice2}+${dice3}=${total}`;
+            }
+            clearBets();
+            gameState.gamesPlayed++;
+            gameState.currentRound++;
+            
+            // 检查是否满足宝箱条件（连续3场或5场）
+            if ((gameState.consecutiveWins === 3 || gameState.consecutiveWins === 5) && !gameState.hasTreasureBox) {
+                gameState.hasTreasureBox = true;
+                gameState.treasureBoxCount++;
+                setTimeout(() => {
+                    const message = gameState.consecutiveWins === 3 ? '恭喜！连续3场中奖！' : '🔥 惊人！连续5场全中！';
+                    document.getElementById('treasureMessage').textContent = message;
+                    document.getElementById('treasureModal').style.display = 'flex';
+                }, 1500);
+            } else if (gameState.currentRound > gameState.maxRounds || gameState.balance <= 0) {
+                setTimeout(() => endGame(), 1500);
+            } else {
+                gameState.isRolling = false;
+                document.getElementById('rollBtn').disabled = false;
+                updateDisplay();
+            }
+        }
+        
+        function checkWin(type, d1, d2, d3, total) {
+            const dice = [d1, d2, d3].sort();
+            const isTriple = dice[0] === dice[1] && dice[1] === dice[2];
+            if (type === 'big' && total >= 11 && total <= 17 && !isTriple) return { isWin: true, multiplier: 2 };
+            if (type === 'small' && total >= 4 && total <= 10 && !isTriple) return { isWin: true, multiplier: 2 };
+            if (type === 'odd' && total % 2 === 1 && !isTriple) return { isWin: true, multiplier: 2 };
+            if (type === 'even' && total % 2 === 0 && !isTriple) return { isWin: true, multiplier: 2 };
+            if (type.startsWith('total-')) {
+                const t = parseInt(type.split('-')[1]);
+                if (total === t) return { isWin: true, multiplier: totalOdds[t] + 1 };
+            }
+            if (type.startsWith('single-')) {
+                const num = parseInt(type.split('-')[1]);
+                const count = [d1, d2, d3].filter(d => d === num).length;
+                if (count > 0) return { isWin: true, multiplier: count + 1 };
+            }
+            if (type.startsWith('pair-')) {
+                const num = parseInt(type.split('-')[1]);
+                if ((dice[0] === num && dice[1] === num) || (dice[1] === num && dice[2] === num)) {
+                    if (!isTriple) return { isWin: true, multiplier: 11 };
+                }
+            }
+            if (type.startsWith('triple-')) {
+                const num = parseInt(type.split('-')[1]);
+                if (d1 === num && d2 === num && d3 === num) return { isWin: true, multiplier: 181 };
+            }
+            if (type === 'triple-any' && isTriple) return { isWin: true, multiplier: 31 };
+            return { isWin: false, multiplier: 0 };
+        }
+        
+        function openTreasureBox() {
+            document.getElementById('treasureModal').style.display = 'none';
+            document.getElementById('wheelModal').style.display = 'flex';
+        }
+        
+        const wheelPrizes = [
+            { value: -25, probability: 5 },
+            { value: 25, probability: 25 },
+            { value: 15, probability: 50 },
+            { value: 35, probability: 10 },
+            { value: 40, probability: 7 },
+            { value: 100, probability: 3 }
+        ];
+        
+        function spinWheel() {
+            document.getElementById('spinBtn').disabled = true;
+            const rand = Math.random() * 100;
+            let cumulative = 0;
+            let selectedPrize = wheelPrizes[2];
+            for (const prize of wheelPrizes) {
+                cumulative += prize.probability;
+                if (rand < cumulative) {
+                    selectedPrize = prize;
+                    break;
+                }
+            }
+            const prizeIndex = wheelPrizes.indexOf(selectedPrize);
+            const wheel = document.getElementById('wheel');
+            const baseRotation = 360 * 5;
+            const prizeAngle = prizeIndex * 60 + 30;
+            const finalRotation = baseRotation + (360 - prizeAngle);
+            wheel.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            setTimeout(() => {
+                gameState.wheelPrize = selectedPrize.value;
+                document.getElementById('prizeAmount').textContent = (selectedPrize.value > 0 ? '+' : '') + selectedPrize.value + ' 元';
+                document.getElementById('prizeAmount').style.color = selectedPrize.value > 0 ? '#90ee90' : '#ff6b6b';
+                document.getElementById('wheelResultDiv').style.display = 'block';
+            }, 4000);
+        }
+        
+        function confirmWheelResult() {
+            gameState.balance += gameState.wheelPrize;
+            gameState.hasTreasureBox = false;
+            gameState.winStreak = 0;
+            document.getElementById('wheelModal').style.display = 'none';
+            document.getElementById('wheelResultDiv').style.display = 'none';
+            document.getElementById('spinBtn').disabled = false;
+            const wheel = document.getElementById('wheel');
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            updateDisplay();
+            if (gameState.currentRound > gameState.maxRounds || gameState.balance <= 0) {
+                endGame();
+            } else {
+                gameState.isRolling = false;
+                document.getElementById('rollBtn').disabled = false;
+            }
+        }
+        
+        function endGame() {
+            updateLeaderboard(gameState.playerId, gameState.balance, gameState.avatar);
+            document.getElementById('finalAvatar').src = gameState.avatar;
+            document.getElementById('finalPlayerId').textContent = gameState.playerId;
+            document.getElementById('finalBalance').textContent = gameState.balance;
+            const profit = gameState.balance - 50;
+            const profitEl = document.getElementById('finalProfit');
+            if (profit > 0) {
+                profitEl.textContent = `🎉 盈利 +${profit} 元`;
+                profitEl.style.color = '#90ee90';
+            } else if (profit < 0) {
+                profitEl.textContent = `😢 亏损 ${profit} 元`;
+                profitEl.style.color = '#ff6b6b';
+            } else {
+                profitEl.textContent = '⚖️ 持平';
+                profitEl.style.color = '#ffd700';
+            }
+            
+            // 显示评价
+            const comment = getScoreComment(gameState.balance);
+            document.getElementById('gameComment').textContent = `"${comment}"`;
+            
+            document.getElementById('gameOverModal').style.display = 'flex';
+        }
+        
+        function updateDisplay() {
+            document.getElementById('balance').textContent = gameState.balance;
+            document.getElementById('currentRound').textContent = gameState.currentRound;
+            document.getElementById('gamesPlayed').textContent = gameState.gamesPlayed;
+            const streakInfo = document.getElementById('streakInfo');
+            if (gameState.consecutiveWins > 0) {
+                streakInfo.style.display = 'block';
+                document.getElementById('streak').textContent = gameState.consecutiveWins;
+            } else {
+                streakInfo.style.display = 'none';
+            }
+        }
+        
+        function updateLeaderboard(playerId, balance, avatar) {
+            const existingIndex = leaderboard.findIndex(p => p.id === playerId);
+            if (existingIndex >= 0) {
+                if (balance > leaderboard[existingIndex].balance) {
+                    leaderboard[existingIndex].balance = balance;
+                    leaderboard[existingIndex].avatar = avatar;
+                }
+            } else {
+                leaderboard.push({ id: playerId, balance, avatar });
+            }
+            leaderboard.sort((a, b) => b.balance - a.balance);
+            leaderboard = leaderboard.slice(0, 5);
+            localStorage.setItem('diceLeaderboardV4', JSON.stringify(leaderboard));
+            displayLeaderboard();
+        }
+        
+        function displayLeaderboard() {
+            const list = document.getElementById('leaderboard');
+            if (leaderboard.length === 0) {
+                list.innerHTML = '<li style="text-align: center; color: #adb5bd; padding: 15px; font-size: 0.9em;">暂无排名</li>';
+                return;
+            }
+            list.innerHTML = leaderboard.map((player, index) => `
+                <li class="leaderboard-item rank-${index + 1}">
+                    <span class="rank">#${index + 1}</span>
+                    <img src="${player.avatar}" class="leaderboard-avatar">
+                    <span class="player-name">${player.id}</span>
+                    <span class="player-balance">¥${player.balance}</span>
+                </li>
+            `).join('');
+        }
+        
+        displayLeaderboard();
+    </script>
+</body>
+</html>
