@@ -29,6 +29,135 @@
             margin: 0 auto;
         }
         
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                height: auto;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+            
+            h1 {
+                font-size: 1.4em;
+                margin-bottom: 8px;
+            }
+            
+            .game-area {
+                padding: 10px;
+            }
+            
+            .dice-area {
+                gap: 10px;
+                padding: 10px;
+            }
+            
+            .dice {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8em;
+            }
+            
+            .user-info {
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .user-details h2 {
+                font-size: 0.9em;
+            }
+            
+            .balance {
+                font-size: 1.2em;
+            }
+            
+            .grid-large {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .grid-medium {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .grid-small {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .bet-option {
+                padding: 6px 2px;
+                font-size: 0.75em;
+            }
+            
+            .bet-option-large {
+                padding: 8px 4px;
+                font-size: 0.85em;
+            }
+            
+            .btn {
+                padding: 8px 20px;
+                font-size: 0.9em;
+            }
+            
+            .login-screen {
+                padding: 40px 15px;
+            }
+            
+            .login-screen h2 {
+                font-size: 1.2em;
+            }
+            
+            .login-screen input {
+                width: 100%;
+                max-width: 260px;
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+            
+            .wheel {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .wheel-label {
+                font-size: 1em;
+            }
+            
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+                max-width: 90vw;
+            }
+            
+            .sidebar-section {
+                padding: 10px;
+            }
+            
+            .leaderboard-item {
+                padding: 8px;
+                font-size: 0.85em;
+            }
+            
+            .leaderboard-avatar {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
         .game-area {
             background: linear-gradient(135deg, #0f5132 0%, #1a6d47 100%);
             border-radius: 15px;
@@ -766,7 +895,58 @@
             treasureBoxCount: 0
         };
         
-        let leaderboard = JSON.parse(localStorage.getItem('diceLeaderboardV4')) || [];
+        // Vercel API 地址
+        const API_BASE = window.location.origin;
+        
+        let leaderboard = [];
+        
+        // 从 Vercel API 加载排行榜
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch(`${API_BASE}/api/leaderboard`);
+                if (response.ok) {
+                    leaderboard = await response.json();
+                } else {
+                    throw new Error('服务器响应错误');
+                }
+            } catch (e) {
+                console.error('加载排行榜失败:', e);
+                // 失败时使用本地存储作为备份
+                leaderboard = JSON.parse(localStorage.getItem('diceLeaderboardV4')) || [];
+            }
+            displayLeaderboard();
+        }
+        
+        // 保存排行榜到 Vercel API
+        async function saveLeaderboard() {
+            try {
+                // 只保存当前玩家的数据到服务器
+                const currentPlayer = leaderboard.find(p => p.id === gameState.playerId);
+                if (currentPlayer) {
+                    const response = await fetch(`${API_BASE}/api/leaderboard`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            playerId: currentPlayer.id,
+                            balance: currentPlayer.balance,
+                            avatar: currentPlayer.avatar
+                        })
+                    });
+                    if (response.ok) {
+                        // 保存成功后重新加载排行榜
+                        const data = await response.json();
+                        leaderboard = data;
+                        displayLeaderboard();
+                    }
+                }
+            } catch (e) {
+                console.error('保存排行榜失败:', e);
+                // 失败时保存到本地
+                localStorage.setItem('diceLeaderboardV4', JSON.stringify(leaderboard));
+            }
+        }
         
         const totalOdds = {
             4: 60, 5: 30, 6: 18, 7: 12, 8: 8, 9: 7, 10: 6,
@@ -1049,7 +1229,7 @@
             }
         }
         
-        function updateLeaderboard(playerId, balance, avatar) {
+        async function updateLeaderboard(playerId, balance, avatar) {
             const existingIndex = leaderboard.findIndex(p => p.id === playerId);
             if (existingIndex >= 0) {
                 if (balance > leaderboard[existingIndex].balance) {
@@ -1061,7 +1241,7 @@
             }
             leaderboard.sort((a, b) => b.balance - a.balance);
             leaderboard = leaderboard.slice(0, 5);
-            localStorage.setItem('diceLeaderboardV4', JSON.stringify(leaderboard));
+            await saveLeaderboard();
             displayLeaderboard();
         }
         
@@ -1081,7 +1261,11 @@
             `).join('');
         }
         
-        displayLeaderboard();
+        // 页面加载时从云端获取排行榜
+        loadLeaderboard();
+        
+        // 每30秒自动刷新排行榜（获取其他玩家的最新成绩）
+        setInterval(loadLeaderboard, 30000);
     </script>
 </body>
 </html>
