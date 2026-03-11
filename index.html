@@ -1256,6 +1256,71 @@
             color: #ff6b6b;
             border: 2px solid #dc3545;
         }
+        
+        /* PK后续选择弹窗 */
+        .pk-followup-modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        .pk-followup-title {
+            color: #ffd700;
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .pk-followup-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .pk-followup-btn {
+            padding: 15px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .pk-followup-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        .pk-btn-stop {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            border-color: #718096;
+            color: #e2e8f0;
+        }
+        
+        .pk-btn-stop:hover {
+            background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+        }
+        
+        .pk-btn-continue {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            border-color: #f87171;
+            color: #fff;
+        }
+        
+        .pk-btn-continue:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.6);
+        }
+        
+        .pk-btn-subtitle {
+            font-size: 0.75em;
+            opacity: 0.9;
+            font-weight: normal;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -1542,6 +1607,22 @@
             <button class="btn btn-roll" onclick="closeVsModal()" id="vsConfirmBtn" style="display: none; margin-top: 20px;">✅ 确认</button>
         </div>
     </div>
+    
+    <!-- PK后续选择弹窗 -->
+    <div id="pkFollowupModal" class="modal" style="display: none;">
+        <div class="modal-content pk-followup-modal">
+            <div class="pk-followup-title">🔥 PK结束，你的选择是？</div>
+            <div class="pk-followup-options">
+                <button class="pk-followup-btn pk-btn-stop" onclick="pkStopContinue()">
+                    😌 好了好了收手吧
+                </button>
+                <button class="pk-followup-btn pk-btn-continue" onclick="pkVerifyCards()">
+                    😤 不够，我要验牌！
+                    <div class="pk-btn-subtitle">（再来！我要翻倍上！）</div>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // 30个预设头像emoji
@@ -1600,7 +1681,9 @@
             treasureBoxCount: 0,
             godBlessingUsed: false,
             lightningMultiplier: 1,
-            pendingPkOpponent: null
+            pendingPkOpponent: null,
+            pkBetAmount: 20,
+            pkRound: 0
         };
         
         // 上帝抽奖结果配置
@@ -1998,6 +2081,8 @@
         // 开始PK
         function startPk(opponent) {
             gameState.pendingPkOpponent = opponent;
+            gameState.pkBetAmount = 20; // 初始赌注20块
+            gameState.pkRound = 1; // 第1轮
             document.getElementById('pkSelectModal').style.display = 'none';
             
             // 设置VS弹窗内容
@@ -2007,17 +2092,22 @@
             document.getElementById('vsOpponentName').textContent = opponent.id;
             
             // 重置骰子显示
+            resetVsDisplay();
+            
+            document.getElementById('vsModal').style.display = 'flex';
+            
+            // 延迟后开始掷骰子
+            setTimeout(() => playPkDice(), 1000);
+        }
+        
+        // 重置VS弹窗显示
+        function resetVsDisplay() {
             document.getElementById('vsPlayerDice').innerHTML = '<div class="vs-dice">?</div><div class="vs-dice">?</div><div class="vs-dice">?</div>';
             document.getElementById('vsOpponentDice').innerHTML = '<div class="vs-dice">?</div><div class="vs-dice">?</div><div class="vs-dice">?</div>';
             document.getElementById('vsPlayerTotal').textContent = '总计: ?';
             document.getElementById('vsOpponentTotal').textContent = '总计: ?';
             document.getElementById('vsResult').style.display = 'none';
             document.getElementById('vsConfirmBtn').style.display = 'none';
-            
-            document.getElementById('vsModal').style.display = 'flex';
-            
-            // 延迟后开始掷骰子
-            setTimeout(() => playPkDice(), 1000);
         }
         
         // PK掷骰子动画
@@ -2057,27 +2147,28 @@
             document.getElementById('vsOpponentTotal').textContent = `总计: ${opponentTotal}`;
             
             const opponent = gameState.pendingPkOpponent;
+            const betAmount = gameState.pkBetAmount;
             
             // 显示结果
             const resultEl = document.getElementById('vsResult');
             if (playerTotal > opponentTotal) {
                 // 玩家赢
-                gameState.balance += 20;
-                resultEl.textContent = `🎉 你赢了！获得 +20 块`;
+                gameState.balance += betAmount;
+                resultEl.textContent = `🎉 你赢了！获得 +${betAmount} 块`;
                 resultEl.className = 'vs-result vs-win';
                 
                 // 更新对手分数（扣分）
-                const newOpponentBalance = Math.max(-99, opponent.balance - 20);
+                const newOpponentBalance = Math.max(-99, opponent.balance - betAmount);
                 await updateLeaderboard(opponent.id, newOpponentBalance, opponent.avatar);
                 
             } else if (playerTotal < opponentTotal) {
                 // 玩家输
-                gameState.balance -= 20;
-                resultEl.textContent = `😢 你输了！损失 -20 块`;
+                gameState.balance -= betAmount;
+                resultEl.textContent = `😢 你输了！损失 -${betAmount} 块`;
                 resultEl.className = 'vs-result vs-lose';
                 
                 // 更新对手分数（加分）
-                const newOpponentBalance = opponent.balance + 20;
+                const newOpponentBalance = opponent.balance + betAmount;
                 await updateLeaderboard(opponent.id, newOpponentBalance, opponent.avatar);
                 
             } else {
@@ -2089,18 +2180,63 @@
             }
             
             resultEl.style.display = 'block';
+            
+            // 显示后续选择按钮（验牌选项）
             document.getElementById('vsConfirmBtn').style.display = 'inline-block';
+            document.getElementById('vsConfirmBtn').textContent = '继续';
+            document.getElementById('vsConfirmBtn').onclick = showPkFollowup;
+            
             updateDisplay();
         }
         
-        // 关闭VS弹窗
-        function closeVsModal() {
+        // 显示PK后续选择弹窗
+        function showPkFollowup() {
             document.getElementById('vsModal').style.display = 'none';
+            document.getElementById('pkFollowupModal').style.display = 'flex';
+        }
+        
+        // 选择【好了好了收手吧】- 结束PK，继续游戏
+        function pkStopContinue() {
+            document.getElementById('pkFollowupModal').style.display = 'none';
+            // 重置PK状态
+            gameState.pkBetAmount = 20;
+            gameState.pkRound = 0;
+            // 检查余额并继续游戏
+            checkBalanceAndContinue();
+        }
+        
+        // 选择【不够，我要验牌！】- 翻倍赌注继续PK
+        function pkVerifyCards() {
+            document.getElementById('pkFollowupModal').style.display = 'none';
             
+            // 赌注翻倍
+            gameState.pkBetAmount = 40;
+            gameState.pkRound++;
+            
+            // 重新显示VS弹窗并开始新一轮
+            const opponent = gameState.pendingPkOpponent;
+            
+            // 更新显示
+            document.getElementById('vsPlayerAvatar').src = gameState.avatar;
+            document.getElementById('vsPlayerName').textContent = gameState.playerId;
+            document.getElementById('vsOpponentAvatar').src = opponent.avatar;
+            document.getElementById('vsOpponentName').textContent = opponent.id;
+            
+            // 重置骰子显示
+            resetVsDisplay();
+            
+            document.getElementById('vsModal').style.display = 'flex';
+            
+            // 延迟后开始掷骰子
+            setTimeout(() => playPkDice(), 1000);
+        }
+        
+        // 检查余额并继续游戏
+        function checkBalanceAndContinue() {
             // 检查余额是否不足
             const minBetCost = Math.min(...Array.from(document.querySelectorAll('.bet-option')).map(el => parseInt(el.dataset.cost)));
             if (gameState.balance < minBetCost && !gameState.godBlessingUsed) {
-                // 如果余额低于2元，先显示余额不足提示
+                // 如果余额低于2块，先显示余额不足提示
                 if (gameState.balance < 2) {
                     document.getElementById('lowBalanceModal').style.display = 'flex';
                 } else {
@@ -2112,6 +2248,12 @@
                 // 继续正常游戏流程
                 startRolling();
             }
+        }
+        
+        // 关闭VS弹窗（兼容旧逻辑）
+        function closeVsModal() {
+            document.getElementById('vsModal').style.display = 'none';
+            checkBalanceAndContinue();
         }
         
         function finishRoll() {
