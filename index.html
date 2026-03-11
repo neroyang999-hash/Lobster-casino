@@ -40,7 +40,7 @@
             
             .container {
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 8px;
                 height: auto;
             }
             
@@ -114,17 +114,24 @@
             }
             
             .login-screen {
-                padding: 40px 15px;
+                padding: 20px 15px;
             }
             
             .login-screen h2 {
-                font-size: 1.2em;
+                font-size: 1.1em;
+                margin-bottom: 12px;
             }
             
             .login-screen input {
                 width: 100%;
                 max-width: 260px;
                 padding: 10px 15px;
+                font-size: 1em;
+                margin: 10px 0;
+            }
+            
+            .login-screen button {
+                padding: 10px 30px;
                 font-size: 1em;
             }
             
@@ -143,18 +150,89 @@
                 max-width: 90vw;
             }
             
+            /* 移动端排行榜紧凑样式 */
             .sidebar-section {
-                padding: 10px;
+                padding: 8px;
+            }
+            
+            .leaderboard h2 {
+                font-size: 0.95em;
+                margin-bottom: 8px;
             }
             
             .leaderboard-item {
-                padding: 8px;
-                font-size: 0.85em;
+                padding: 4px 6px;
+                font-size: 0.75em;
+                margin-bottom: 4px;
+                gap: 6px;
             }
             
             .leaderboard-avatar {
-                width: 32px;
-                height: 32px;
+                width: 24px;
+                height: 24px;
+                border-width: 1px;
+            }
+            
+            .rank {
+                font-size: 0.85em;
+                min-width: 18px;
+            }
+            
+            .player-name {
+                font-size: 0.85em;
+            }
+            
+            .player-balance {
+                font-size: 0.8em;
+            }
+            
+            .cloud-status {
+                width: 14px;
+                height: 14px;
+                font-size: 10px;
+                bottom: -3px;
+                right: -3px;
+            }
+            
+            /* 就这榜移动端紧凑样式 */
+            .lowest-list {
+                margin-top: 8px;
+                padding-top: 8px;
+            }
+            
+            .lowest-list h3 {
+                font-size: 0.9em;
+                margin-bottom: 6px;
+            }
+            
+            /* 高分榜前三名边框移动端调整 */
+            .leaderboard-item.rank-1 {
+                border-width: 2px;
+            }
+            
+            .leaderboard-item.rank-2,
+            .leaderboard-item.rank-3 {
+                border-width: 2px;
+            }
+            
+            /* 缎带移动端调整 */
+            .ribbon-banner-sidebar {
+                margin: -8px -8px 8px -8px;
+                padding: 6px 8px;
+            }
+            
+            .ribbon-text-sidebar {
+                font-size: 0.7em;
+            }
+            
+            .ribbon-winner-sidebar {
+                font-size: 0.9em;
+            }
+            
+            /* 累计局数移动端调整 */
+            .total-games-stats {
+                font-size: 0.75em;
+                margin-top: 10px;
             }
         }
         
@@ -887,6 +965,47 @@
             font-weight: bold;
         }
         
+        /* 侧边栏缎带样式 */
+        .ribbon-banner-sidebar {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #ffd700;
+            padding: 10px 15px;
+            margin: -15px -15px 15px -15px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+        }
+        
+        .ribbon-text-sidebar {
+            font-size: 0.8em;
+            color: #fff;
+        }
+        
+        .ribbon-winner-sidebar {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-top: 3px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            /* ... existing mobile styles ... */
+            
+            .ribbon-banner-sidebar {
+                margin: -10px -10px 10px -10px;
+                padding: 8px 10px;
+            }
+            
+            .ribbon-text-sidebar {
+                font-size: 0.75em;
+            }
+            
+            .ribbon-winner-sidebar {
+                font-size: 1em;
+            }
+        }
+        
         /* 闪电弹窗样式 */
         .lightning-modal {
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%);
@@ -1142,15 +1261,11 @@
 <body>
     <div class="container">
         <div class="game-area">
-            <h1>🎲 龙虾豪华赌场 🦞</h1>
+            <h1>🎲 龙虾豪华数学挑战赛 🦞</h1>
             
             <div id="loginScreen" class="login-screen">
-                <div class="ribbon-banner" id="ribbonBanner">
-                    <div class="ribbon-text">🏆 玩弄概率的神，你的名字是：</div>
-                    <div class="ribbon-winner" id="ribbonWinner">暂无</div>
-                </div>
                 <h2>欢迎来到龙虾豪华数学挑战赛！</h2>
-                <p style="font-size: 1em; margin-bottom: 15px;">输入ID，获得50元筹码</p>
+                <p style="font-size: 1em; margin-bottom: 15px;">输入ID，获得50块筹码</p>
                 <input type="text" id="playerIdInput" placeholder="输入你的ID（最多15个字）" maxlength="15">
                 <br>
                 <button onclick="startGame()">🎰 开始挑战</button>
@@ -1162,7 +1277,7 @@
                     <img id="playerAvatar" class="avatar" src="" alt="头像">
                     <div class="user-details">
                         <h2>🎰 <span id="playerId"></span></h2>
-                        <div class="balance">💰 <span id="balance">50</span> 元</div>
+                        <div class="balance">💰 <span id="balance">50</span> 块</div>
                         <div class="round-info">第 <span id="currentRound">1</span>/5轮 | <span id="gamesPlayed">0</span>场</div>
                         <div class="streak-info" id="streakInfo" style="display: none;">🔥 连胜 <span id="streak">0</span></div>
                     </div>
@@ -1268,6 +1383,10 @@
         
         <div class="sidebar">
             <div class="sidebar-section">
+                <div class="ribbon-banner-sidebar" id="ribbonBannerSidebar">
+                    <div class="ribbon-text-sidebar">🏆 玩弄概率的神：</div>
+                    <div class="ribbon-winner-sidebar" id="ribbonWinnerSidebar">暂无</div>
+                </div>
                 <div class="leaderboard">
                     <h2>🏆 高分榜</h2>
                     <ul class="leaderboard-list" id="leaderboard">
@@ -1326,7 +1445,7 @@
             <h2>🎮 游戏结束</h2>
             <img id="finalAvatar" src="" alt="头像">
             <p style="font-size: 1.2em; margin: 10px 0;">玩家：<span id="finalPlayerId"></span></p>
-            <p style="font-size: 2em; color: #90ee90; margin: 15px 0;">💰 <span id="finalBalance"></span> 元</p>
+            <p style="font-size: 2em; color: #90ee90; margin: 15px 0;">💰 <span id="finalBalance"></span> 块</p>
             <p id="finalProfit" style="font-size: 1.1em; margin: 10px 0;"></p>
             <div class="comment" id="gameComment"></div>
             <button class="btn btn-roll" onclick="location.reload()" style="margin-top: 20px;">🔄 再来一局</button>
@@ -1360,7 +1479,7 @@
             <div class="lottery-image" id="lotteryImage">🎁</div>
             <div class="lottery-title" id="lotteryTitle">抽奖结果</div>
             <div class="lottery-desc" id="lotteryDesc">描述文字</div>
-            <div class="lottery-balance" id="lotteryBalance">💰 0 元</div>
+            <div class="lottery-balance" id="lotteryBalance">💰 0 块</div>
             <button class="btn btn-roll" onclick="confirmLotteryResult()" id="lotteryBtn">✅ 确认</button>
         </div>
     </div>
@@ -1747,7 +1866,7 @@
             // 应用效果
             if (result.effect === 'add') {
                 gameState.balance += result.amount;
-                balanceEl.textContent = `💰 +${result.amount} 元 (余额: ${gameState.balance})`;
+                balanceEl.textContent = `💰 +${result.amount} 块 (余额: ${gameState.balance})`;
                 balanceEl.className = 'lottery-balance positive';
             } else if (result.effect === 'zero') {
                 gameState.balance = 0;
@@ -1755,7 +1874,7 @@
                 balanceEl.className = 'lottery-balance negative';
             } else if (result.effect === 'set') {
                 gameState.balance = result.amount;
-                balanceEl.textContent = `💰 ${result.amount} 元`;
+                balanceEl.textContent = `💰 ${result.amount} 块`;
                 balanceEl.className = 'lottery-balance negative';
             }
             
@@ -1799,8 +1918,8 @@
                 return;
             }
             
-            // 1/8概率触发闪电弹窗
-            if (Math.random() < 0.125) {
+            // 1/6概率触发闪电弹窗
+            if (Math.random() < 0.167) {
                 showLightningModal();
                 return;
             }
@@ -1867,7 +1986,7 @@
                 candidate.innerHTML = `
                     <img src="${player.avatar}" alt="">
                     <span class="pk-candidate-name">${player.id}</span>
-                    <span class="pk-candidate-balance">¥${player.balance}</span>
+                    <span class="pk-candidate-balance">${player.balance}块</span>
                 `;
                 candidate.onclick = () => startPk(player);
                 candidatesContainer.appendChild(candidate);
@@ -1944,7 +2063,7 @@
             if (playerTotal > opponentTotal) {
                 // 玩家赢
                 gameState.balance += 20;
-                resultEl.textContent = `🎉 你赢了！获得 +20 元`;
+                resultEl.textContent = `🎉 你赢了！获得 +20 块`;
                 resultEl.className = 'vs-result vs-win';
                 
                 // 更新对手分数（扣分）
@@ -1954,7 +2073,7 @@
             } else if (playerTotal < opponentTotal) {
                 // 玩家输
                 gameState.balance -= 20;
-                resultEl.textContent = `😢 你输了！损失 -20 元`;
+                resultEl.textContent = `😢 你输了！损失 -20 块`;
                 resultEl.className = 'vs-result vs-lose';
                 
                 // 更新对手分数（加分）
@@ -2011,7 +2130,7 @@
                 if (win.isWin) {
                     const payout = bet.cost * win.multiplier;
                     winAmount += payout;
-                    results.push(`${bet.element.querySelector('.name').textContent}: +${payout}元`);
+                    results.push(`${bet.element.querySelector('.name').textContent}: +${payout}块`);
                 }
             });
             const resultDiv = document.getElementById('result');
@@ -2053,7 +2172,7 @@
             } else if (gameState.currentRound > gameState.maxRounds || gameState.balance <= 0) {
                 setTimeout(() => endGame(), 1500);
             } else if (gameState.balance < 2 && !gameState.godBlessingUsed) {
-                // 余额低于2元，直接弹出余额不足提示
+                // 余额低于2块，直接弹出余额不足提示
                 setTimeout(() => {
                     document.getElementById('lowBalanceModal').style.display = 'flex';
                 }, 1500);
@@ -2129,7 +2248,7 @@
             wheel.style.transform = `rotate(${finalRotation}deg)`;
             setTimeout(() => {
                 gameState.wheelPrize = selectedPrize.value;
-                document.getElementById('prizeAmount').textContent = (selectedPrize.value > 0 ? '+' : '') + selectedPrize.value + ' 元';
+                document.getElementById('prizeAmount').textContent = (selectedPrize.value > 0 ? '+' : '') + selectedPrize.value + ' 块';
                 document.getElementById('prizeAmount').style.color = selectedPrize.value > 0 ? '#90ee90' : '#ff6b6b';
                 document.getElementById('wheelResultDiv').style.display = 'block';
             }, 4000);
@@ -2166,10 +2285,10 @@
             const profit = gameState.balance - 50;
             const profitEl = document.getElementById('finalProfit');
             if (profit > 0) {
-                profitEl.textContent = `🎉 盈利 +${profit} 元`;
+                profitEl.textContent = `🎉 盈利 +${profit} 块`;
                 profitEl.style.color = '#90ee90';
             } else if (profit < 0) {
-                profitEl.textContent = `😢 亏损 ${profit} 元`;
+                profitEl.textContent = `😢 亏损 ${profit} 块`;
                 profitEl.style.color = '#ff6b6b';
             } else {
                 profitEl.textContent = '⚖️ 持平';
@@ -2202,8 +2321,16 @@
         // 原生分数记录（用于小云朵状态）
         let originalScores = JSON.parse(localStorage.getItem('diceOriginalScoresV4')) || {};
         
-        // 累计局数统计
+        // 累计局数统计（包含历史记录）
         let totalGamesPlayed = parseInt(localStorage.getItem('diceTotalGamesV4')) || 0;
+        
+        // 从排行榜计算历史总局数
+        function calculateTotalGamesFromLeaderboard() {
+            // 如果有排行榜数据，每有一个玩家至少算一局
+            const playerCount = leaderboard.length;
+            // 取已有统计和玩家数的较大值
+            return Math.max(totalGamesPlayed, playerCount);
+        }
         
         async function updateLeaderboard(playerId, balance, avatar) {
             // 更新高分榜
@@ -2244,16 +2371,17 @@
         
         // 更新开始界面信息（缎带和累计局数）
         function updateLoginScreenInfo() {
-            // 更新缎带上的第一名
-            const ribbonWinner = document.getElementById('ribbonWinner');
-            if (leaderboard.length > 0 && ribbonWinner) {
-                ribbonWinner.textContent = leaderboard[0].id;
+            // 更新侧边栏缎带上的第一名
+            const ribbonWinnerSidebar = document.getElementById('ribbonWinnerSidebar');
+            if (leaderboard.length > 0 && ribbonWinnerSidebar) {
+                ribbonWinnerSidebar.textContent = leaderboard[0].id;
             }
             
-            // 更新累计局数
+            // 更新累计局数（包含历史记录）
             const totalGamesEl = document.getElementById('totalGamesCount');
             if (totalGamesEl) {
-                totalGamesEl.textContent = totalGamesPlayed;
+                const totalFromHistory = calculateTotalGamesFromLeaderboard();
+                totalGamesEl.textContent = Math.max(totalGamesPlayed, totalFromHistory);
             }
         }
         
@@ -2271,14 +2399,18 @@
         }
         
         function displayLeaderboard() {
-            // 显示高分榜（只显示前8名）
+            // 检测是否为移动端
+            const isMobile = window.innerWidth <= 768;
+            
+            // 显示高分榜
             const list = document.getElementById('leaderboard');
             if (leaderboard.length === 0) {
                 list.innerHTML = '<li style="text-align: center; color: #adb5bd; padding: 15px; font-size: 0.9em;">暂无排名</li>';
             } else {
-                // 只取前8名显示
-                const top8 = leaderboard.slice(0, 8);
-                list.innerHTML = top8.map((player, index) => {
+                // 移动端显示前5名，PC端显示前8名
+                const displayCount = isMobile ? 5 : 8;
+                const topPlayers = leaderboard.slice(0, displayCount);
+                list.innerHTML = topPlayers.map((player, index) => {
                     const status = getCloudStatus(player.id, player.balance);
                     const cloudHtml = status.emoji ? `<span class="cloud-status">${status.emoji}</span>` : '';
                     return `
@@ -2289,24 +2421,27 @@
                                 ${cloudHtml}
                             </div>
                             <span class="player-name">${player.id}</span>
-                            <span class="player-balance ${status.class}">¥${player.balance}</span>
+                            <span class="player-balance ${status.class}">${player.balance}块</span>
                         </li>
                     `;
                 }).join('');
             }
             
-            // 显示最低分榜
+            // 显示最低分榜（就这榜）
             const lowestList = document.getElementById('lowestLeaderboard');
             const lowestContainer = document.getElementById('lowestList');
             
             if (lowestLeaderboard.length > 0) {
                 lowestContainer.style.display = 'block';
-                lowestList.innerHTML = lowestLeaderboard.map((player, index) => `
+                // 移动端显示前2名，PC端显示前3名
+                const displayCount = isMobile ? 2 : 3;
+                const lowestPlayers = lowestLeaderboard.slice(0, displayCount);
+                lowestList.innerHTML = lowestPlayers.map((player, index) => `
                     <li class="leaderboard-item lowest-item">
                         <span class="rank">#${index + 1}</span>
                         <img src="${player.avatar}" class="leaderboard-avatar">
                         <span class="player-name">${player.id}</span>
-                        <span class="player-balance">¥${player.balance}</span>
+                        <span class="player-balance">${player.balance}块</span>
                     </li>
                 `).join('');
             } else {
