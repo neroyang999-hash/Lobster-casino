@@ -802,6 +802,37 @@
             color: #ff6b6b;
         }
         
+        /* 排行榜头像状态样式 */
+        .leaderboard-avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .cloud-status {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            border: 1px solid #ccc;
+        }
+        
+        .balance-higher {
+            color: #ff4444 !important;
+            font-weight: bold;
+        }
+        
+        .balance-lower {
+            color: #ffcc00 !important;
+            font-weight: bold;
+        }
+        
         /* 闪电弹窗样式 */
         .lightning-modal {
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%);
@@ -1802,7 +1833,7 @@
         }
         
         // PK结束
-        function finishPk() {
+        async function finishPk() {
             const playerDice = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
             const opponentDice = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
             
@@ -1819,16 +1850,30 @@
             document.getElementById('vsPlayerTotal').textContent = `总计: ${playerTotal}`;
             document.getElementById('vsOpponentTotal').textContent = `总计: ${opponentTotal}`;
             
+            const opponent = gameState.pendingPkOpponent;
+            
             // 显示结果
             const resultEl = document.getElementById('vsResult');
             if (playerTotal > opponentTotal) {
+                // 玩家赢
                 gameState.balance += 20;
                 resultEl.textContent = `🎉 你赢了！获得 +20 元`;
                 resultEl.className = 'vs-result vs-win';
+                
+                // 更新对手分数（扣分）
+                const newOpponentBalance = Math.max(-99, opponent.balance - 20);
+                await updateLeaderboard(opponent.id, newOpponentBalance, opponent.avatar);
+                
             } else if (playerTotal < opponentTotal) {
+                // 玩家输
                 gameState.balance -= 20;
                 resultEl.textContent = `😢 你输了！损失 -20 元`;
                 resultEl.className = 'vs-result vs-lose';
+                
+                // 更新对手分数（加分）
+                const newOpponentBalance = opponent.balance + 20;
+                await updateLeaderboard(opponent.id, newOpponentBalance, opponent.avatar);
+                
             } else {
                 resultEl.textContent = `⚖️ 平局！`;
                 resultEl.className = 'vs-result';
@@ -2053,56 +2098,81 @@
         // 最低分榜数据（本地存储）
         let lowestLeaderboard = JSON.parse(localStorage.getItem('diceLowestLeaderboardV4')) || [];
         
+        // 原生分数记录（用于小云朵状态）
+        let originalScores = JSON.parse(localStorage.getItem('diceOriginalScoresV4')) || {};
+        
         async function updateLeaderboard(playerId, balance, avatar) {
             // 更新高分榜
             const existingIndex = leaderboard.findIndex(p => p.id === playerId);
             if (existingIndex >= 0) {
-                if (balance > leaderboard[existingIndex].balance) {
-                    leaderboard[existingIndex].balance = balance;
-                    leaderboard[existingIndex].avatar = avatar;
-                }
+                leaderboard[existingIndex].balance = balance;
+                leaderboard[existingIndex].avatar = avatar;
             } else {
                 leaderboard.push({ id: playerId, balance, avatar });
             }
+            
+            // 记录原生分数（第一次记录）
+            if (!originalScores[playerId]) {
+                originalScores[playerId] = balance;
+                localStorage.setItem('diceOriginalScoresV4', JSON.stringify(originalScores));
+            }
+            
+            // 排序并只保留前8名
             leaderboard.sort((a, b) => b.balance - a.balance);
-            leaderboard = leaderboard.slice(0, 8); // 只保留前8名
+            leaderboard = leaderboard.slice(0, 8);
             
             // 更新最低分榜（只保留最低的3个）
             const existingLowestIndex = lowestLeaderboard.findIndex(p => p.id === playerId);
             if (existingLowestIndex >= 0) {
-                // 更新已有记录（取更低的分数）
-                if (balance < lowestLeaderboard[existingLowestIndex].balance) {
-                    lowestLeaderboard[existingLowestIndex].balance = balance;
-                    lowestLeaderboard[existingLowestIndex].avatar = avatar;
-                }
+                lowestLeaderboard[existingLowestIndex].balance = balance;
+                lowestLeaderboard[existingLowestIndex].avatar = avatar;
             } else {
-                // 添加新记录
                 lowestLeaderboard.push({ id: playerId, balance, avatar });
             }
-            // 按分数从低到高排序，只保留最低的3个
             lowestLeaderboard.sort((a, b) => a.balance - b.balance);
             lowestLeaderboard = lowestLeaderboard.slice(0, 3);
-            // 保存到本地存储
             localStorage.setItem('diceLowestLeaderboardV4', JSON.stringify(lowestLeaderboard));
             
             await saveLeaderboard();
             displayLeaderboard();
         }
         
+        // 获取玩家的小云朵状态
+        function getCloudStatus(playerId, currentBalance) {
+            const original = originalScores[playerId];
+            if (!original) return { emoji: '', class: '' };
+            
+            if (currentBalance > original) {
+                return { emoji: '😎', class: 'balance-higher' }; // 墨镜云 - 分数更高
+            } else if (currentBalance < original) {
+                return { emoji: '😢', class: 'balance-lower' }; // 流泪云 - 分数更低
+            }
+            return { emoji: '', class: '' };
+        }
+        
         function displayLeaderboard() {
-            // 显示高分榜
+            // 显示高分榜（只显示前8名）
             const list = document.getElementById('leaderboard');
             if (leaderboard.length === 0) {
                 list.innerHTML = '<li style="text-align: center; color: #adb5bd; padding: 15px; font-size: 0.9em;">暂无排名</li>';
             } else {
-                list.innerHTML = leaderboard.map((player, index) => `
-                    <li class="leaderboard-item rank-${index + 1}">
-                        <span class="rank">#${index + 1}</span>
-                        <img src="${player.avatar}" class="leaderboard-avatar">
-                        <span class="player-name">${player.id}</span>
-                        <span class="player-balance">¥${player.balance}</span>
-                    </li>
-                `).join('');
+                // 只取前8名显示
+                const top8 = leaderboard.slice(0, 8);
+                list.innerHTML = top8.map((player, index) => {
+                    const status = getCloudStatus(player.id, player.balance);
+                    const cloudHtml = status.emoji ? `<span class="cloud-status">${status.emoji}</span>` : '';
+                    return `
+                        <li class="leaderboard-item rank-${index + 1}">
+                            <span class="rank">#${index + 1}</span>
+                            <div class="leaderboard-avatar-container">
+                                <img src="${player.avatar}" class="leaderboard-avatar">
+                                ${cloudHtml}
+                            </div>
+                            <span class="player-name">${player.id}</span>
+                            <span class="player-balance ${status.class}">¥${player.balance}</span>
+                        </li>
+                    `;
+                }).join('');
             }
             
             // 显示最低分榜
