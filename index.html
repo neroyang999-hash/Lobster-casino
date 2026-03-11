@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎲 龙虾豪华赌场 🦞</title>
+    <title>🎲 龙虾豪华数学挑战赛 🦞</title>
     <style>
         * {
             margin: 0;
@@ -833,6 +833,60 @@
             font-weight: bold;
         }
         
+        /* 高分榜前三名金色加粗边框 */
+        .leaderboard-item.rank-1 {
+            border: 4px solid #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 237, 78, 0.3) 100%);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .leaderboard-item.rank-2 {
+            border: 3px solid #c0c0c0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.3) 0%, rgba(220, 220, 220, 0.3) 100%);
+        }
+        
+        .leaderboard-item.rank-3 {
+            border: 3px solid #cd7f32;
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.3) 0%, rgba(222, 160, 100, 0.3) 100%);
+        }
+        
+        /* 开始界面缎带样式 */
+        .ribbon-banner {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #ffd700;
+            padding: 12px 30px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 10px 10px 0 0;
+            font-size: 1em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            border-bottom: 3px solid #ffd700;
+        }
+        
+        .ribbon-text {
+            font-size: 0.9em;
+            color: #fff;
+        }
+        
+        .ribbon-winner {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-top: 5px;
+        }
+        
+        /* 累计局数统计样式 */
+        .total-games-stats {
+            color: #fff;
+            font-size: 0.85em;
+            margin-top: 15px;
+            opacity: 0.9;
+        }
+        
+        .total-games-stats span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
         /* 闪电弹窗样式 */
         .lightning-modal {
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%);
@@ -1091,11 +1145,16 @@
             <h1>🎲 龙虾豪华赌场 🦞</h1>
             
             <div id="loginScreen" class="login-screen">
-                <h2>欢迎来到龙虾豪华赌场！</h2>
+                <div class="ribbon-banner" id="ribbonBanner">
+                    <div class="ribbon-text">🏆 玩弄概率的神，你的名字是：</div>
+                    <div class="ribbon-winner" id="ribbonWinner">暂无</div>
+                </div>
+                <h2>欢迎来到龙虾豪华数学挑战赛！</h2>
                 <p style="font-size: 1em; margin-bottom: 15px;">输入ID，获得50元筹码</p>
-                <input type="text" id="playerIdInput" placeholder="输入你的ID" maxlength="20">
+                <input type="text" id="playerIdInput" placeholder="输入你的ID（最多15个字）" maxlength="15">
                 <br>
-                <button onclick="startGame()">🎰 进入赌场</button>
+                <button onclick="startGame()">🎰 开始挑战</button>
+                <div class="total-games-stats">目前挑战局数：<span id="totalGamesCount">0</span></div>
             </div>
             
             <div id="gameScreen" style="display: none; height: 100%; display: flex; flex-direction: column;">
@@ -1271,6 +1330,16 @@
             <p id="finalProfit" style="font-size: 1.1em; margin: 10px 0;"></p>
             <div class="comment" id="gameComment"></div>
             <button class="btn btn-roll" onclick="location.reload()" style="margin-top: 20px;">🔄 再来一局</button>
+        </div>
+    </div>
+    
+    <!-- 余额不足提示弹窗 -->
+    <div id="lowBalanceModal" class="modal" style="display: none;">
+        <div class="modal-content god-modal">
+            <div class="god-image">😱</div>
+            <div class="god-title">大哥，你玩的中路夏洛特吗？</div>
+            <div class="god-subtitle" style="color: #ff6b6b; font-size: 1.2em;">就剩1块钱了哥</div>
+            <button class="btn btn-roll" onclick="showGodModalFromLowBalance()" style="margin-top: 20px; padding: 15px 40px; font-size: 1.2em;">💰 信仰充值</button>
         </div>
     </div>
     
@@ -1523,6 +1592,13 @@
                 alert('请输入你的ID！');
                 return;
             }
+            
+            // 检查ID长度（中文字符算1个，但长度限制为15个字符）
+            if (playerId.length > 15) {
+                alert('ID长度不能超过15个字符！');
+                return;
+            }
+            
             gameState.playerId = playerId;
             gameState.avatar = generateAvatar(playerId);
             gameState.balance = 50;
@@ -1566,10 +1642,21 @@
             
             // 如果余额不足以投注最低金额，且还没使用过上帝祝福
             if (gameState.balance < minBetCost && !gameState.godBlessingUsed) {
-                showGodModal();
+                // 如果余额低于2元，先显示余额不足提示
+                if (gameState.balance < 2) {
+                    document.getElementById('lowBalanceModal').style.display = 'flex';
+                } else {
+                    showGodModal();
+                }
             } else {
                 alert('余额不足！');
             }
+        }
+        
+        // 从余额不足提示跳转到上帝充值弹窗
+        function showGodModalFromLowBalance() {
+            document.getElementById('lowBalanceModal').style.display = 'none';
+            showGodModal();
         }
         
         // 显示上帝充值弹窗
@@ -1894,7 +1981,12 @@
             // 检查余额是否不足
             const minBetCost = Math.min(...Array.from(document.querySelectorAll('.bet-option')).map(el => parseInt(el.dataset.cost)));
             if (gameState.balance < minBetCost && !gameState.godBlessingUsed) {
-                showGodModal();
+                // 如果余额低于2元，先显示余额不足提示
+                if (gameState.balance < 2) {
+                    document.getElementById('lowBalanceModal').style.display = 'flex';
+                } else {
+                    showGodModal();
+                }
             } else if (gameState.balance <= 0) {
                 endGame();
             } else {
@@ -1960,6 +2052,11 @@
                 }, 1500);
             } else if (gameState.currentRound > gameState.maxRounds || gameState.balance <= 0) {
                 setTimeout(() => endGame(), 1500);
+            } else if (gameState.balance < 2 && !gameState.godBlessingUsed) {
+                // 余额低于2元，直接弹出余额不足提示
+                setTimeout(() => {
+                    document.getElementById('lowBalanceModal').style.display = 'flex';
+                }, 1500);
             } else {
                 gameState.isRolling = false;
                 document.getElementById('rollBtn').disabled = false;
@@ -2058,6 +2155,10 @@
         }
         
         function endGame() {
+            // 增加累计局数
+            totalGamesPlayed++;
+            localStorage.setItem('diceTotalGamesV4', totalGamesPlayed);
+            
             updateLeaderboard(gameState.playerId, gameState.balance, gameState.avatar);
             document.getElementById('finalAvatar').src = gameState.avatar;
             document.getElementById('finalPlayerId').textContent = gameState.playerId;
@@ -2101,6 +2202,9 @@
         // 原生分数记录（用于小云朵状态）
         let originalScores = JSON.parse(localStorage.getItem('diceOriginalScoresV4')) || {};
         
+        // 累计局数统计
+        let totalGamesPlayed = parseInt(localStorage.getItem('diceTotalGamesV4')) || 0;
+        
         async function updateLeaderboard(playerId, balance, avatar) {
             // 更新高分榜
             const existingIndex = leaderboard.findIndex(p => p.id === playerId);
@@ -2135,6 +2239,22 @@
             
             await saveLeaderboard();
             displayLeaderboard();
+            updateLoginScreenInfo();
+        }
+        
+        // 更新开始界面信息（缎带和累计局数）
+        function updateLoginScreenInfo() {
+            // 更新缎带上的第一名
+            const ribbonWinner = document.getElementById('ribbonWinner');
+            if (leaderboard.length > 0 && ribbonWinner) {
+                ribbonWinner.textContent = leaderboard[0].id;
+            }
+            
+            // 更新累计局数
+            const totalGamesEl = document.getElementById('totalGamesCount');
+            if (totalGamesEl) {
+                totalGamesEl.textContent = totalGamesPlayed;
+            }
         }
         
         // 获取玩家的小云朵状态
@@ -2195,10 +2315,16 @@
         }
         
         // 页面加载时从云端获取排行榜
-        loadLeaderboard();
+        loadLeaderboard().then(() => {
+            updateLoginScreenInfo();
+        });
         
         // 每30秒自动刷新排行榜（获取其他玩家的最新成绩）
-        setInterval(loadLeaderboard, 30000);
+        setInterval(() => {
+            loadLeaderboard().then(() => {
+                updateLoginScreenInfo();
+            });
+        }, 30000);
     </script>
 </body>
 </html>
