@@ -1,48 +1,55 @@
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  const { createClient } = require('redis');
-  
-  // Vercel Redis 使用 REDIS_URL 格式：redis://default:密码@主机:端口
-  const redis = createClient({
-    url: process.env.REDIS_URL
-  });
-  
-  await redis.connect();
-
-  if (req.method === 'GET') {
-    const data = await redis.get('leaderboard');
-    await redis.disconnect();
-    return res.status(200).json(data ? JSON.parse(data) : []);
-  }
-
-  if (req.method === 'POST') {
-    const { playerId, balance, avatar } = req.body;
-    let leaderboard = await redis.get('leaderboard');
-    leaderboard = leaderboard ? JSON.parse(leaderboard) : [];
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const path = url.pathname;
     
-    const existingIndex = leaderboard.findIndex(p => p.id === playerId);
-    if (existingIndex >= 0) {
-      if (balance > leaderboard[existingIndex].balance) {
-        leaderboard[existingIndex].balance = balance;
-        leaderboard[existingIndex].avatar = avatar;
-      }
-    } else {
-      leaderboard.push({ id: playerId, balance, avatar });
+    // CORS headers
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Content-Type': 'application/json'
+    };
+
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
     }
-    
-    leaderboard.sort((a, b) => b.balance - a.balance);
-    leaderboard = leaderboard.slice(0, 20);
-    
-    await redis.set('leaderboard', JSON.stringify(leaderboard));
-    await redis.disconnect();
-    return res.status(200).json(leaderboard);
-  }
 
-  res.status(405).json({ error: 'Method not allowed' });
-}
+    // GET /api/leaderboard
+    if (path === '/api/leaderboard' && request.method === 'GET') {
+      const data = await env.KV.get('leaderboard');
+      const leaderboard = data ? JSON.parse(data) : [];
+      return new Response(JSON.stringify(leaderboard), { headers: corsHeaders });
+    }
+
+    // POST /api/leaderboard
+    if (path === '/api/leaderboard' && request.method === 'POST') {
+      const body = await request.json();
+      const { playerId, balance, avatar } = body;
+      
+      let leaderboard = await env.KV.get('leaderboard');
+      leaderboard = leaderboard ? JSON.parse(leaderboard) : [];
+      
+      const existingIndex = leaderboard.findIndex(p => p.id === playerId);
+      if (existingIndex >= 0) {
+        if (balance > leaderboard[existingIndex].balance) {
+          leaderboard[existingIndex].balance = balance;
+          leaderboard[existingIndex].avatar = avatar;
+        }
+      } else {
+        leaderboard.push({ id: playerId, balance, avatar });
+      }
+      
+      leaderboard.sort((a, b) => b.balance - a.balance);
+      leaderboard = leaderboard.slice(0, 20);
+      
+      await env.KV.put('leaderboard', JSON.stringify(leaderboard));
+      return new Response(JSON.stringify(leaderboard), { headers: corsHeaders });
+    }
+
+    return new Response(JSON.stringify({ error: 'Not found' }), { 
+      status: 404, 
+      headers: corsHeaders 
+    });
+  }
+};
