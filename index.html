@@ -917,29 +917,26 @@
             displayLeaderboard();
         }
         
-        // 保存排行榜到 Vercel API
+        // 保存排行榜到 Cloudflare API
         async function saveLeaderboard() {
             try {
-                // 只保存当前玩家的数据到服务器
-                const currentPlayer = leaderboard.find(p => p.id === gameState.playerId);
-                if (currentPlayer) {
-                    const response = await fetch(`${API_BASE}/api/leaderboard`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            playerId: currentPlayer.id,
-                            balance: currentPlayer.balance,
-                            avatar: currentPlayer.avatar
-                        })
-                    });
-                    if (response.ok) {
-                        // 保存成功后重新加载排行榜
-                        const data = await response.json();
-                        leaderboard = data;
-                        displayLeaderboard();
-                    }
+                // 保存当前玩家的数据到服务器
+                const response = await fetch(`${API_BASE}/api/leaderboard`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        playerId: gameState.playerId,
+                        balance: gameState.balance,
+                        avatar: gameState.avatar
+                    })
+                });
+                if (response.ok) {
+                    // 保存成功后重新加载排行榜
+                    const data = await response.json();
+                    leaderboard = data;
+                    displayLeaderboard();
                 }
             } catch (e) {
                 console.error('保存排行榜失败:', e);
