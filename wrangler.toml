@@ -1,6 +1,9 @@
 name = "lobstercasino"
 compatibility_date = "2024-01-01"
 
+[assets]
+directory = "."
+
 [[kv_namespaces]]
 binding = "KV"
-id = "9fc8cc698f364a11b390615373e1dad3"
+id = "a5d4e4f8e8f34b5e9e8c6d7f8a9b0c1d"
