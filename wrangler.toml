@@ -1,0 +1,6 @@
+name = "lobstercasino"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "你的KV命名空间ID"
