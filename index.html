@@ -655,6 +655,403 @@
             font-style: italic;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
+        
+        /* 上帝充值弹窗样式 */
+        .god-modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+        
+        .god-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #ffd700;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .god-title {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+        
+        .god-subtitle {
+            color: #90ee90;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        
+        .space-key {
+            display: inline-block;
+            background: linear-gradient(135deg, #4a4a6a 0%, #2a2a4a 100%);
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            padding: 15px 50px;
+            font-size: 1.3em;
+            color: #ffd700;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.1s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            margin: 15px 0;
+        }
+        
+        .space-key:hover {
+            background: linear-gradient(135deg, #5a5a7a 0%, #3a3a5a 100%);
+        }
+        
+        .space-key.pressed {
+            transform: scale(0.95);
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .god-warning {
+            color: #ff6b6b;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+        
+        /* 抽奖结果弹窗样式 */
+        .lottery-result {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        .lottery-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #ffd700;
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+        }
+        
+        .lottery-title {
+            color: #ffd700;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .lottery-desc {
+            color: #fff;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .lottery-balance {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .lottery-balance.positive {
+            color: #90ee90;
+        }
+        
+        .lottery-balance.negative {
+            color: #ff6b6b;
+        }
+        
+        /* 就这榜样式 */
+        .lowest-list {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed rgba(255, 107, 107, 0.5);
+        }
+        
+        .lowest-list h3 {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .lowest-item {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid rgba(255, 107, 107, 0.5);
+        }
+        
+        .lowest-item .player-balance {
+            color: #ff6b6b;
+        }
+        
+        /* 闪电弹窗样式 */
+        .lightning-modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: lightningPulse 2s infinite;
+        }
+        
+        @keyframes lightningPulse {
+            0%, 100% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 80px rgba(255, 215, 0, 0.9), inset 0 0 40px rgba(255, 255, 255, 0.2); }
+        }
+        
+        .lightning-title {
+            font-size: 3em;
+            margin-bottom: 15px;
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .lightning-subtitle {
+            color: #ffd700;
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+        
+        .pill-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .pill-btn {
+            padding: 20px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid;
+            min-width: 180px;
+        }
+        
+        .pill-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .pill-blue {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-color: #60a5fa;
+            color: white;
+        }
+        
+        .pill-blue:hover {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        }
+        
+        .pill-red {
+            background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%);
+            border-color: #f87171;
+            color: white;
+        }
+        
+        .pill-red:hover {
+            background: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+        }
+        
+        .pill-emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .pill-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .pill-desc {
+            font-size: 0.85em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        /* PK选择弹窗 */
+        .pk-select-modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #dc2626;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .pk-select-title {
+            color: #dc2626;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+        }
+        
+        .pk-candidates {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .pk-candidate {
+            background: rgba(220, 38, 38, 0.2);
+            border: 2px solid rgba(220, 38, 38, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+        
+        .pk-candidate:hover {
+            background: rgba(220, 38, 38, 0.4);
+            transform: translateX(10px);
+        }
+        
+        .pk-candidate img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #dc2626;
+        }
+        
+        .pk-candidate-name {
+            flex: 1;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .pk-candidate-balance {
+            color: #dc2626;
+            font-size: 1.1em;
+        }
+        
+        /* VS对战弹窗 */
+        .vs-modal {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            border: 4px solid #ffd700;
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .vs-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .vs-player {
+            text-align: center;
+        }
+        
+        .vs-player img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .vs-player-name {
+            color: #ffd700;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .vs-player-dice {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .vs-dice {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            border: 2px solid #333;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #c41e3a;
+        }
+        
+        .vs-logo {
+            font-size: 4em;
+            color: #dc2626;
+            text-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+            animation: vsPulse 1s infinite;
+        }
+        
+        @keyframes vsPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .vs-total {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-top: 10px;
+        }
+        
+        .vs-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .vs-win {
+            background: rgba(40, 167, 69, 0.3);
+            color: #90ee90;
+            border: 2px solid #28a745;
+        }
+        
+        .vs-lose {
+            background: rgba(220, 53, 69, 0.3);
+            color: #ff6b6b;
+            border: 2px solid #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -782,10 +1179,14 @@
         <div class="sidebar">
             <div class="sidebar-section">
                 <div class="leaderboard">
-                    <h2>🏆 排行榜</h2>
+                    <h2>🏆 高分榜</h2>
                     <ul class="leaderboard-list" id="leaderboard">
                         <li style="text-align: center; color: #adb5bd; padding: 15px; font-size: 0.9em;">暂无排名</li>
                     </ul>
+                    <div class="lowest-list" id="lowestList" style="display: none;">
+                        <h3>😅 就这榜</h3>
+                        <ul class="leaderboard-list" id="lowestLeaderboard"></ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -841,41 +1242,126 @@
             <button class="btn btn-roll" onclick="location.reload()" style="margin-top: 20px;">🔄 再来一局</button>
         </div>
     </div>
+    
+    <!-- 上帝充值弹窗 -->
+    <div id="godModal" class="modal" style="display: none;">
+        <div class="modal-content god-modal">
+            <div class="god-image">👑</div>
+            <div class="god-title">少年，为信仰充Q币吗？</div>
+            <div class="god-subtitle">按住Space空格键，念出"信仰充值"</div>
+            <div class="space-key" id="spaceKey">Space</div>
+            <div class="god-warning">⚠️ 请注意，只有一次施法机会</div>
+        </div>
+    </div>
+    
+    <!-- 抽奖结果弹窗 -->
+    <div id="lotteryModal" class="modal" style="display: none;">
+        <div class="modal-content lottery-result">
+            <div class="lottery-image" id="lotteryImage">🎁</div>
+            <div class="lottery-title" id="lotteryTitle">抽奖结果</div>
+            <div class="lottery-desc" id="lotteryDesc">描述文字</div>
+            <div class="lottery-balance" id="lotteryBalance">💰 0 元</div>
+            <button class="btn btn-roll" onclick="confirmLotteryResult()" id="lotteryBtn">✅ 确认</button>
+        </div>
+    </div>
+    
+    <!-- 闪电弹窗 -->
+    <div id="lightningModal" class="modal" style="display: none;">
+        <div class="modal-content lightning-modal">
+            <div class="lightning-title">⚡⚡⚡</div>
+            <div class="lightning-subtitle">命运的抉择降临！</div>
+            <div class="pill-options">
+                <div class="pill-btn pill-blue" onclick="chooseBluePill()">
+                    <div class="pill-emoji">💊</div>
+                    <div class="pill-title">吃下蓝色小药丸</div>
+                    <div class="pill-desc">效果：让所有收获或损失翻倍</div>
+                </div>
+                <div class="pill-btn pill-red" onclick="chooseRedPill()">
+                    <div class="pill-emoji">💊</div>
+                    <div class="pill-title">吃下红色逍遥丸</div>
+                    <div class="pill-desc">疯狂的是我还是世界？<br>选择你要PK的玩家</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PK选择弹窗 -->
+    <div id="pkSelectModal" class="modal" style="display: none;">
+        <div class="modal-content pk-select-modal">
+            <div class="pk-select-title">🔥 选择你的对手</div>
+            <div class="pk-candidates" id="pkCandidates"></div>
+        </div>
+    </div>
+    
+    <!-- VS对战弹窗 -->
+    <div id="vsModal" class="modal" style="display: none;">
+        <div class="modal-content vs-modal">
+            <div class="vs-container">
+                <div class="vs-player">
+                    <img id="vsPlayerAvatar" src="" alt="">
+                    <div class="vs-player-name" id="vsPlayerName">你</div>
+                    <div class="vs-player-dice" id="vsPlayerDice">
+                        <div class="vs-dice">?</div>
+                        <div class="vs-dice">?</div>
+                        <div class="vs-dice">?</div>
+                    </div>
+                    <div class="vs-total" id="vsPlayerTotal">总计: ?</div>
+                </div>
+                <div class="vs-logo">VS</div>
+                <div class="vs-player">
+                    <img id="vsOpponentAvatar" src="" alt="">
+                    <div class="vs-player-name" id="vsOpponentName">对手</div>
+                    <div class="vs-player-dice" id="vsOpponentDice">
+                        <div class="vs-dice">?</div>
+                        <div class="vs-dice">?</div>
+                        <div class="vs-dice">?</div>
+                    </div>
+                    <div class="vs-total" id="vsOpponentTotal">总计: ?</div>
+                </div>
+            </div>
+            <div class="vs-result" id="vsResult" style="display: none;"></div>
+            <button class="btn btn-roll" onclick="closeVsModal()" id="vsConfirmBtn" style="display: none; margin-top: 20px;">✅ 确认</button>
+        </div>
+    </div>
 
     <script>
+        // 30个预设头像emoji
+        const avatarEmojis = [
+            '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯',
+            '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦆',
+            '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋'
+        ];
+        
+        // 头像背景颜色
+        const avatarColors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57',
+            '#FF9FF3', '#54A0FF', '#48DBFB', '#1DD1A1', '#FFC048',
+            '#FF6348', '#C8E6C9', '#F8BBD9', '#D1C4E9', '#B3E5FC',
+            '#FFF9C4', '#FFCCBC', '#B2DFDB', '#F0F4C3', '#E1BEE7',
+            '#C5CAE9', '#B2EBF2', '#DCEDC8', '#FFE0B2', '#F8BBD0',
+            '#D7CCC8', '#F5F5F5', '#CFD8DC', '#FFAB91', '#CE93D8'
+        ];
+        
         function generateAvatar(seed) {
+            const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const emojiIndex = hash % avatarEmojis.length;
+            const colorIndex = (hash * 7) % avatarColors.length;
+            
             const canvas = document.createElement('canvas');
             canvas.width = 200;
             canvas.height = 200;
             const ctx = canvas.getContext('2d');
-            const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            const random = (index) => {
-                const x = Math.sin(hash + index) * 10000;
-                return x - Math.floor(x);
-            };
-            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
-            gradient.addColorStop(0, `hsl(${random(1) * 360}, 70%, 60%)`);
-            gradient.addColorStop(1, `hsl(${random(2) * 360}, 70%, 40%)`);
-            ctx.fillStyle = gradient;
+            
+            // 绘制背景
+            ctx.fillStyle = avatarColors[colorIndex];
             ctx.fillRect(0, 0, 200, 200);
-            ctx.fillStyle = `hsl(${random(3) * 60 + 20}, 60%, 70%)`;
-            ctx.beginPath();
-            ctx.arc(100, 100, 60, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.arc(80, 90, 8, 0, Math.PI * 2);
-            ctx.arc(120, 90, 8, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            if (random(4) > 0.5) {
-                ctx.arc(100, 100, 30, 0.2 * Math.PI, 0.8 * Math.PI);
-            } else {
-                ctx.arc(100, 120, 30, 1.2 * Math.PI, 1.8 * Math.PI);
-            }
-            ctx.stroke();
+            
+            // 绘制emoji
+            ctx.font = '120px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(avatarEmojis[emojiIndex], 100, 100);
+            
             return canvas.toDataURL();
         }
         
@@ -892,8 +1378,39 @@
             consecutiveWins: 0,
             hasTreasureBox: false,
             wheelPrize: 0,
-            treasureBoxCount: 0
+            treasureBoxCount: 0,
+            godBlessingUsed: false,
+            lightningMultiplier: 1,
+            pendingPkOpponent: null
         };
+        
+        // 上帝抽奖结果配置
+        const godLotteryResults = [
+            {
+                emoji: '🐔',
+                title: '信鸡哥，太美了',
+                desc: '鸡哥感受到了你的虔诚，赐予你神秘力量！',
+                effect: 'add',
+                amount: 20,
+                class: 'positive'
+            },
+            {
+                emoji: '👨‍💼',
+                title: '你就拿这来考验干部？',
+                desc: '干部对你的表现很不满意，没收了所有筹码！',
+                effect: 'zero',
+                amount: 0,
+                class: 'negative'
+            },
+            {
+                emoji: '🍝',
+                title: '恭喜你，打开了潘多拉魔盒',
+                desc: '你成为了忠实的异飞天意面神教教徒！RAmen！',
+                effect: 'set',
+                amount: -99,
+                class: 'negative'
+            }
+        ];
         
         // Vercel API 地址
         const API_BASE = window.location.origin;
@@ -1002,11 +1519,148 @@
             } else {
                 const totalCost = gameState.selectedBets.reduce((sum, b) => sum + b.cost, 0) + cost;
                 if (totalCost > gameState.balance) {
-                    alert('余额不足！');
+                    // 余额不足，检查是否可以触发上帝充值
+                    checkGodBlessing();
                     return;
                 }
                 element.classList.add('selected');
                 gameState.selectedBets.push({ type, cost, element });
+            }
+        }
+        
+        // 检查是否需要上帝充值
+        function checkGodBlessing() {
+            // 找出最低投注金额
+            const minBetCost = Math.min(...Array.from(document.querySelectorAll('.bet-option')).map(el => parseInt(el.dataset.cost)));
+            
+            // 如果余额不足以投注最低金额，且还没使用过上帝祝福
+            if (gameState.balance < minBetCost && !gameState.godBlessingUsed) {
+                showGodModal();
+            } else {
+                alert('余额不足！');
+            }
+        }
+        
+        // 显示上帝充值弹窗
+        function showGodModal() {
+            document.getElementById('godModal').style.display = 'flex';
+            setupSpaceKeyListener();
+        }
+        
+        // 设置Space键监听
+        function setupSpaceKeyListener() {
+            const spaceKey = document.getElementById('spaceKey');
+            let isPressed = false;
+            
+            // 鼠标/触摸按下
+            const handleStart = (e) => {
+                e.preventDefault();
+                if (isPressed) return;
+                isPressed = true;
+                spaceKey.classList.add('pressed');
+            };
+            
+            // 鼠标/触摸松开
+            const handleEnd = (e) => {
+                e.preventDefault();
+                if (!isPressed) return;
+                isPressed = false;
+                spaceKey.classList.remove('pressed');
+                // 触发抽奖
+                triggerGodLottery();
+            };
+            
+            spaceKey.addEventListener('mousedown', handleStart);
+            spaceKey.addEventListener('mouseup', handleEnd);
+            spaceKey.addEventListener('mouseleave', handleEnd);
+            spaceKey.addEventListener('touchstart', handleStart, { passive: false });
+            spaceKey.addEventListener('touchend', handleEnd, { passive: false });
+            
+            // 键盘Space键
+            const handleKeyDown = (e) => {
+                if (e.code === 'Space' && !isPressed) {
+                    e.preventDefault();
+                    isPressed = true;
+                    spaceKey.classList.add('pressed');
+                }
+            };
+            
+            const handleKeyUp = (e) => {
+                if (e.code === 'Space' && isPressed) {
+                    e.preventDefault();
+                    isPressed = false;
+                    spaceKey.classList.remove('pressed');
+                    // 触发抽奖
+                    triggerGodLottery();
+                }
+            };
+            
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+            
+            // 保存监听器引用以便后续移除
+            window.godKeyListeners = { handleKeyDown, handleKeyUp };
+        }
+        
+        // 触发上帝抽奖
+        function triggerGodLottery() {
+            gameState.godBlessingUsed = true;
+            document.getElementById('godModal').style.display = 'none';
+            
+            // 移除键盘监听器
+            if (window.godKeyListeners) {
+                document.removeEventListener('keydown', window.godKeyListeners.handleKeyDown);
+                document.removeEventListener('keyup', window.godKeyListeners.handleKeyUp);
+            }
+            
+            // 随机选择一个结果
+            const result = godLotteryResults[Math.floor(Math.random() * godLotteryResults.length)];
+            showLotteryResult(result);
+        }
+        
+        // 显示抽奖结果
+        function showLotteryResult(result) {
+            document.getElementById('lotteryImage').textContent = result.emoji;
+            document.getElementById('lotteryTitle').textContent = result.title;
+            document.getElementById('lotteryDesc').textContent = result.desc;
+            
+            const balanceEl = document.getElementById('lotteryBalance');
+            
+            // 应用效果
+            if (result.effect === 'add') {
+                gameState.balance += result.amount;
+                balanceEl.textContent = `💰 +${result.amount} 元 (余额: ${gameState.balance})`;
+                balanceEl.className = 'lottery-balance positive';
+            } else if (result.effect === 'zero') {
+                gameState.balance = 0;
+                balanceEl.textContent = `💰 金额归零！`;
+                balanceEl.className = 'lottery-balance negative';
+            } else if (result.effect === 'set') {
+                gameState.balance = result.amount;
+                balanceEl.textContent = `💰 ${result.amount} 元`;
+                balanceEl.className = 'lottery-balance negative';
+            }
+            
+            // 保存当前结果以便确认时使用
+            window.currentLotteryResult = result;
+            
+            document.getElementById('lotteryModal').style.display = 'flex';
+            updateDisplay();
+        }
+        
+        // 确认抽奖结果
+        function confirmLotteryResult() {
+            document.getElementById('lotteryModal').style.display = 'none';
+            const result = window.currentLotteryResult;
+            
+            // 如果金额归零或为负数，结束游戏
+            if (result.effect === 'zero' || result.effect === 'set') {
+                endGame();
+            } else {
+                // 继续游戏
+                gameState.isRolling = false;
+                document.getElementById('rollBtn').disabled = false;
+                updateDisplay();
             }
         }
         
@@ -1026,6 +1680,18 @@
                 alert('余额不足！');
                 return;
             }
+            
+            // 1/8概率触发闪电弹窗
+            if (Math.random() < 0.125) {
+                showLightningModal();
+                return;
+            }
+            
+            startRolling();
+        }
+        
+        function startRolling() {
+            const totalCost = gameState.selectedBets.reduce((sum, b) => sum + b.cost, 0);
             gameState.isRolling = true;
             document.getElementById('rollBtn').disabled = true;
             document.getElementById('result').style.display = 'none';
@@ -1041,6 +1707,155 @@
                     finishRoll();
                 }
             }, 100);
+        }
+        
+        // 显示闪电弹窗
+        function showLightningModal() {
+            document.getElementById('lightningModal').style.display = 'flex';
+        }
+        
+        // 选择蓝色小药丸
+        function chooseBluePill() {
+            document.getElementById('lightningModal').style.display = 'none';
+            gameState.lightningMultiplier = 2;
+            startRolling();
+        }
+        
+        // 选择红色逍遥丸
+        function chooseRedPill() {
+            document.getElementById('lightningModal').style.display = 'none';
+            showPkSelectModal();
+        }
+        
+        // 显示PK选择弹窗
+        function showPkSelectModal() {
+            const candidatesContainer = document.getElementById('pkCandidates');
+            candidatesContainer.innerHTML = '';
+            
+            // 从高分榜前6名中随机选3个
+            const topPlayers = leaderboard.slice(0, 6);
+            if (topPlayers.length === 0) {
+                alert('暂无其他玩家可供PK！');
+                startRolling();
+                return;
+            }
+            
+            // 随机打乱并取前3个
+            const shuffled = [...topPlayers].sort(() => Math.random() - 0.5).slice(0, 3);
+            
+            shuffled.forEach(player => {
+                const candidate = document.createElement('div');
+                candidate.className = 'pk-candidate';
+                candidate.innerHTML = `
+                    <img src="${player.avatar}" alt="">
+                    <span class="pk-candidate-name">${player.id}</span>
+                    <span class="pk-candidate-balance">¥${player.balance}</span>
+                `;
+                candidate.onclick = () => startPk(player);
+                candidatesContainer.appendChild(candidate);
+            });
+            
+            document.getElementById('pkSelectModal').style.display = 'flex';
+        }
+        
+        // 开始PK
+        function startPk(opponent) {
+            gameState.pendingPkOpponent = opponent;
+            document.getElementById('pkSelectModal').style.display = 'none';
+            
+            // 设置VS弹窗内容
+            document.getElementById('vsPlayerAvatar').src = gameState.avatar;
+            document.getElementById('vsPlayerName').textContent = gameState.playerId;
+            document.getElementById('vsOpponentAvatar').src = opponent.avatar;
+            document.getElementById('vsOpponentName').textContent = opponent.id;
+            
+            // 重置骰子显示
+            document.getElementById('vsPlayerDice').innerHTML = '<div class="vs-dice">?</div><div class="vs-dice">?</div><div class="vs-dice">?</div>';
+            document.getElementById('vsOpponentDice').innerHTML = '<div class="vs-dice">?</div><div class="vs-dice">?</div><div class="vs-dice">?</div>';
+            document.getElementById('vsPlayerTotal').textContent = '总计: ?';
+            document.getElementById('vsOpponentTotal').textContent = '总计: ?';
+            document.getElementById('vsResult').style.display = 'none';
+            document.getElementById('vsConfirmBtn').style.display = 'none';
+            
+            document.getElementById('vsModal').style.display = 'flex';
+            
+            // 延迟后开始掷骰子
+            setTimeout(() => playPkDice(), 1000);
+        }
+        
+        // PK掷骰子动画
+        function playPkDice() {
+            const playerDiceEls = document.getElementById('vsPlayerDice').querySelectorAll('.vs-dice');
+            const opponentDiceEls = document.getElementById('vsOpponentDice').querySelectorAll('.vs-dice');
+            
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                playerDiceEls.forEach(dice => dice.textContent = Math.floor(Math.random() * 6) + 1);
+                opponentDiceEls.forEach(dice => dice.textContent = Math.floor(Math.random() * 6) + 1);
+                rollCount++;
+                
+                if (rollCount >= 15) {
+                    clearInterval(rollInterval);
+                    finishPk();
+                }
+            }, 100);
+        }
+        
+        // PK结束
+        function finishPk() {
+            const playerDice = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
+            const opponentDice = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1];
+            
+            const playerTotal = playerDice.reduce((a, b) => a + b, 0);
+            const opponentTotal = opponentDice.reduce((a, b) => a + b, 0);
+            
+            // 更新显示
+            const playerDiceEls = document.getElementById('vsPlayerDice').querySelectorAll('.vs-dice');
+            const opponentDiceEls = document.getElementById('vsOpponentDice').querySelectorAll('.vs-dice');
+            
+            playerDice.forEach((d, i) => playerDiceEls[i].textContent = d);
+            opponentDice.forEach((d, i) => opponentDiceEls[i].textContent = d);
+            
+            document.getElementById('vsPlayerTotal').textContent = `总计: ${playerTotal}`;
+            document.getElementById('vsOpponentTotal').textContent = `总计: ${opponentTotal}`;
+            
+            // 显示结果
+            const resultEl = document.getElementById('vsResult');
+            if (playerTotal > opponentTotal) {
+                gameState.balance += 20;
+                resultEl.textContent = `🎉 你赢了！获得 +20 元`;
+                resultEl.className = 'vs-result vs-win';
+            } else if (playerTotal < opponentTotal) {
+                gameState.balance -= 20;
+                resultEl.textContent = `😢 你输了！损失 -20 元`;
+                resultEl.className = 'vs-result vs-lose';
+            } else {
+                resultEl.textContent = `⚖️ 平局！`;
+                resultEl.className = 'vs-result';
+                resultEl.style.background = 'rgba(255, 215, 0, 0.3)';
+                resultEl.style.color = '#ffd700';
+                resultEl.style.border = '2px solid #ffd700';
+            }
+            
+            resultEl.style.display = 'block';
+            document.getElementById('vsConfirmBtn').style.display = 'inline-block';
+            updateDisplay();
+        }
+        
+        // 关闭VS弹窗
+        function closeVsModal() {
+            document.getElementById('vsModal').style.display = 'none';
+            
+            // 检查余额是否不足
+            const minBetCost = Math.min(...Array.from(document.querySelectorAll('.bet-option')).map(el => parseInt(el.dataset.cost)));
+            if (gameState.balance < minBetCost && !gameState.godBlessingUsed) {
+                showGodModal();
+            } else if (gameState.balance <= 0) {
+                endGame();
+            } else {
+                // 继续正常游戏流程
+                startRolling();
+            }
         }
         
         function finishRoll() {
@@ -1064,18 +1879,27 @@
             });
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = 'block';
+            // 应用闪电倍数
+            if (gameState.lightningMultiplier > 1 && winAmount > 0) {
+                winAmount *= gameState.lightningMultiplier;
+            }
+            
             if (winAmount > 0) {
                 gameState.balance += winAmount;
                 gameState.winStreak++;
                 gameState.consecutiveWins++;
                 resultDiv.className = 'result win';
-                resultDiv.innerHTML = `🎉 中奖！${dice1}+${dice2}+${dice3}=${total}<br>${results.join(' | ')}`;
+                const multiplierText = gameState.lightningMultiplier > 1 ? ` (x${gameState.lightningMultiplier}倍)` : '';
+                resultDiv.innerHTML = `🎉 中奖${multiplierText}！${dice1}+${dice2}+${dice3}=${total}<br>${results.join(' | ')}`;
             } else {
                 gameState.winStreak = 0;
                 gameState.consecutiveWins = 0;
                 resultDiv.className = 'result lose';
                 resultDiv.innerHTML = `😢 未中 ${dice1}+${dice2}+${dice3}=${total}`;
             }
+            
+            // 重置闪电倍数
+            gameState.lightningMultiplier = 1;
             clearBets();
             gameState.gamesPlayed++;
             gameState.currentRound++;
@@ -1226,7 +2050,11 @@
             }
         }
         
+        // 最低分榜数据（本地存储）
+        let lowestLeaderboard = JSON.parse(localStorage.getItem('diceLowestLeaderboardV4')) || [];
+        
         async function updateLeaderboard(playerId, balance, avatar) {
+            // 更新高分榜
             const existingIndex = leaderboard.findIndex(p => p.id === playerId);
             if (existingIndex >= 0) {
                 if (balance > leaderboard[existingIndex].balance) {
@@ -1237,25 +2065,63 @@
                 leaderboard.push({ id: playerId, balance, avatar });
             }
             leaderboard.sort((a, b) => b.balance - a.balance);
-            leaderboard = leaderboard.slice(0, 5);
+            leaderboard = leaderboard.slice(0, 8); // 只保留前8名
+            
+            // 更新最低分榜（只保留最低的3个）
+            const existingLowestIndex = lowestLeaderboard.findIndex(p => p.id === playerId);
+            if (existingLowestIndex >= 0) {
+                // 更新已有记录（取更低的分数）
+                if (balance < lowestLeaderboard[existingLowestIndex].balance) {
+                    lowestLeaderboard[existingLowestIndex].balance = balance;
+                    lowestLeaderboard[existingLowestIndex].avatar = avatar;
+                }
+            } else {
+                // 添加新记录
+                lowestLeaderboard.push({ id: playerId, balance, avatar });
+            }
+            // 按分数从低到高排序，只保留最低的3个
+            lowestLeaderboard.sort((a, b) => a.balance - b.balance);
+            lowestLeaderboard = lowestLeaderboard.slice(0, 3);
+            // 保存到本地存储
+            localStorage.setItem('diceLowestLeaderboardV4', JSON.stringify(lowestLeaderboard));
+            
             await saveLeaderboard();
             displayLeaderboard();
         }
         
         function displayLeaderboard() {
+            // 显示高分榜
             const list = document.getElementById('leaderboard');
             if (leaderboard.length === 0) {
                 list.innerHTML = '<li style="text-align: center; color: #adb5bd; padding: 15px; font-size: 0.9em;">暂无排名</li>';
-                return;
+            } else {
+                list.innerHTML = leaderboard.map((player, index) => `
+                    <li class="leaderboard-item rank-${index + 1}">
+                        <span class="rank">#${index + 1}</span>
+                        <img src="${player.avatar}" class="leaderboard-avatar">
+                        <span class="player-name">${player.id}</span>
+                        <span class="player-balance">¥${player.balance}</span>
+                    </li>
+                `).join('');
             }
-            list.innerHTML = leaderboard.map((player, index) => `
-                <li class="leaderboard-item rank-${index + 1}">
-                    <span class="rank">#${index + 1}</span>
-                    <img src="${player.avatar}" class="leaderboard-avatar">
-                    <span class="player-name">${player.id}</span>
-                    <span class="player-balance">¥${player.balance}</span>
-                </li>
-            `).join('');
+            
+            // 显示最低分榜
+            const lowestList = document.getElementById('lowestLeaderboard');
+            const lowestContainer = document.getElementById('lowestList');
+            
+            if (lowestLeaderboard.length > 0) {
+                lowestContainer.style.display = 'block';
+                lowestList.innerHTML = lowestLeaderboard.map((player, index) => `
+                    <li class="leaderboard-item lowest-item">
+                        <span class="rank">#${index + 1}</span>
+                        <img src="${player.avatar}" class="leaderboard-avatar">
+                        <span class="player-name">${player.id}</span>
+                        <span class="player-balance">¥${player.balance}</span>
+                    </li>
+                `).join('');
+            } else {
+                lowestContainer.style.display = 'none';
+            }
         }
         
         // 页面加载时从云端获取排行榜
